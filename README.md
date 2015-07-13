@@ -1,2 +1,2 @@
 # keeper
-Simple webapp for keeping simple values. Simple as that
+Simple webapp for keeping simple values. Simple as that!
