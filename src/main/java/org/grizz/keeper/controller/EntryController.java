@@ -3,13 +3,10 @@ package org.grizz.keeper.controller;
 import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Date;
 
 /**
  * Created by Grizz on 2015-07-13.
@@ -25,7 +22,7 @@ public class EntryController {
         Entry entry = entryRepository.findAll().stream()
                 .findFirst()
                 .orElse(EntryEntity.builder()
-                        .date(DateTime.now().getMillis())
+                        .date(System.currentTimeMillis())
                         .key("someValue")
                         .value("heheszki")
                         .build());
