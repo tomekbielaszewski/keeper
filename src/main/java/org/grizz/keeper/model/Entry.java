@@ -1,12 +1,17 @@
 package org.grizz.keeper.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 /**
- * Created by Grizz on 2015-07-13.
+ * Created by Grizz on 2015-07-14.
  */
-public class Entry {
-    private String key;
-    private String value;
-    private Date date;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public interface Entry {
+    String getKey();
+
+    String getValue();
+
+    Date getDate();
 }
