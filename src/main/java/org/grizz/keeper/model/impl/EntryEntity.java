@@ -3,6 +3,7 @@ package org.grizz.keeper.model.impl;
 import lombok.Builder;
 import lombok.Value;
 import org.grizz.keeper.model.Entry;
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -12,9 +13,9 @@ import java.util.Date;
  */
 @Value
 @Builder
-@Document(collection = "values")
+@Document(collection = "entries")
 public class EntryEntity implements Entry {
     private String key;
     private String value;
-    private Date date;
+    private Long date;
 }

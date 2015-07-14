@@ -1,6 +1,7 @@
 package org.grizz.keeper.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -13,5 +14,5 @@ public interface Entry {
 
     String getValue();
 
-    Date getDate();
+    Long getDate();
 }
