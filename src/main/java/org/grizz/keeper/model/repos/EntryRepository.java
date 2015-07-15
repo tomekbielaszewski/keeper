@@ -12,4 +12,6 @@ public interface EntryRepository extends MongoRepository<EntryEntity, String> {
     List<EntryEntity> findByKeyOrderByDateDesc(String key);
 
     EntryEntity findTopByKeyOrderByDateDesc(String key);
+
+    List<EntryEntity> findByKeyAndDateGreaterThanEqualOrderByDateDesc(String key, Long date);
 }

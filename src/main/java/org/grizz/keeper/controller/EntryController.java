@@ -23,6 +23,12 @@ public class EntryController {
         return entries;
     }
 
+    @RequestMapping(value = "/{key}/{from}", method = RequestMethod.GET)
+    public List<EntryEntity> getHistoryFromLast(@PathVariable String key, @PathVariable Long from) {
+        List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
+        return entries;
+    }
+
     @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
     public EntryEntity getLast(@PathVariable String key) {
         EntryEntity entry = entryRepository.findTopByKeyOrderByDateDesc(key);

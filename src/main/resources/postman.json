@@ -1,0 +1,49 @@
+{
+  "id": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+  "name": "keeper",
+  "timestamp": 1436895425395,
+  "requests": [
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "539dece7-0c42-9189-023d-cc40441d6aa7",
+      "name": "Add entry",
+      "description": "",
+      "url": "http://localhost:8080/entry",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1436975645690
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "5b97bf1f-b284-014c-87c5-350131c82285",
+      "name": "Last entry",
+      "description": "",
+      "url": "http://localhost:8080/entry/last/vab",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "683828af-71de-ac95-0559-d1b9b4f63f66",
+      "name": "Entry history",
+      "description": "",
+      "url": "http://localhost:8080/entry/vab",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1436975681451
+    }
+  ]
+}
