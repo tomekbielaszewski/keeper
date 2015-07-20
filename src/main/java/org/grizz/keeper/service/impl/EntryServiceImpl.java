@@ -1,10 +1,11 @@
 package org.grizz.keeper.service.impl;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.service.EntryService;
+import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -75,17 +76,5 @@ public class EntryServiceImpl implements EntryService {
 
     private boolean hasRestrictedKey(EntryEntity entry) {
         return "ERROR".equals(entry.getKey());
-    }
-
-    public class MandatoryFieldsMissingException extends RuntimeException {
-    }
-
-    public class RestrictedKeyException extends RuntimeException {
-        @Getter
-        private String key;
-
-        public RestrictedKeyException(String key) {
-            this.key = key;
-        }
     }
 }

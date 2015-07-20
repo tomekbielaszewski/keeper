@@ -2,7 +2,8 @@ package org.grizz.keeper.controller;
 
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.EntryService;
-import org.grizz.keeper.service.impl.EntryServiceImpl;
+import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class EntryController {
         return entryService.addMany(entries);
     }
 
-    @ExceptionHandler(EntryServiceImpl.MandatoryFieldsMissingException.class)
+    @ExceptionHandler(MandatoryFieldsMissingException.class)
     public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e) {
         return EntryEntity.builder()
                 .key("ERROR")
@@ -53,9 +54,9 @@ public class EntryController {
                 .build();
     }
 
-    @ExceptionHandler(EntryServiceImpl.RestrictedKeyException.class)
+    @ExceptionHandler(RestrictedKeyException.class)
     public EntryEntity restrictedKeyExceptionHandler(Exception e) {
-        EntryServiceImpl.RestrictedKeyException exception = (EntryServiceImpl.RestrictedKeyException) e;
+        RestrictedKeyException exception = (RestrictedKeyException) e;
         return EntryEntity.builder()
                 .key("ERROR")
                 .value("Provided key [" + exception.getKey() + "] is restricted!")
