@@ -2,20 +2,58 @@
   "id": "3da48a4c-459d-fd82-8d02-689a34f768e9",
   "name": "keeper",
   "timestamp": 1436895425395,
+  "order": [
+    "539dece7-0c42-9189-023d-cc40441d6aa7",
+    "bfc28f54-c2d9-36ac-bb83-7354b9ae7c7e",
+    "2539b6be-83e1-62f4-6120-96f90fb6adbd",
+    "d1450f0e-8597-b506-9154-9be5c2613691",
+    "f842e663-54d6-3756-624b-cd73d4743a5d",
+    "07e945e8-7bdd-ba31-8921-256761fc0c92",
+    "683828af-71de-ac95-0559-d1b9b4f63f66",
+    "5b97bf1f-b284-014c-87c5-350131c82285"
+  ],
   "requests": [
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "07e945e8-7bdd-ba31-8921-256761fc0c92",
+      "name": "Add many entries (one with restricted key)",
+      "description": "",
+      "url": "http://localhost:8080/entry/add/many",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "[{\n    \"key\": \"ERROR\",\n    \"value\": \"heheszki\"\n},\n{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}]",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "2539b6be-83e1-62f4-6120-96f90fb6adbd",
+      "name": "Add entry with restricted key",
+      "description": "",
+      "url": "http://localhost:8080/entry/add",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "{\n    \"key\": \"ERROR\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
     {
       "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
       "id": "539dece7-0c42-9189-023d-cc40441d6aa7",
       "name": "Add entry",
       "description": "",
-      "url": "http://localhost:8080/entry",
+      "url": "http://localhost:8080/entry/add",
       "method": "POST",
       "headers": "Content-Type: application/json\n",
       "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
       "dataMode": "raw",
       "timestamp": 0,
       "version": 2,
-      "time": 1436975645690
+      "time": 1437421252730
     },
     {
       "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
@@ -44,6 +82,48 @@
       "timestamp": 0,
       "version": 2,
       "time": 1436975681451
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "bfc28f54-c2d9-36ac-bb83-7354b9ae7c7e",
+      "name": "Add entry with null key",
+      "description": "",
+      "url": "http://localhost:8080/entry/add",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "{\n    \"key\": \"\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "d1450f0e-8597-b506-9154-9be5c2613691",
+      "name": "Add many entries",
+      "description": "",
+      "url": "http://localhost:8080/entry/add/many",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "[{\n    \"key\": \"some key\",\n    \"value\": \"lol1\"\n},\n{\n    \"key\": \"some key\",\n    \"value\": \"lol2\"\n}]",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1437422023711
+    },
+    {
+      "collectionId": "3da48a4c-459d-fd82-8d02-689a34f768e9",
+      "id": "f842e663-54d6-3756-624b-cd73d4743a5d",
+      "name": "Add many entries (one with null key)",
+      "description": "",
+      "url": "http://localhost:8080/entry/add/many",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "[{\n    \"key\": \"\",\n    \"value\": \"heheszki\"\n},\n{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}]",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1437422045783
     }
   ]
 }

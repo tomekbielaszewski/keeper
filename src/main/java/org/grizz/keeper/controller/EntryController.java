@@ -1,11 +1,13 @@
 package org.grizz.keeper.controller;
 
 import org.grizz.keeper.model.impl.EntryEntity;
-import org.grizz.keeper.model.repos.EntryRepository;
+import org.grizz.keeper.service.EntryService;
+import org.grizz.keeper.service.impl.EntryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -15,31 +17,49 @@ import java.util.List;
 @RequestMapping("/entry")
 public class EntryController {
     @Autowired
-    private EntryRepository entryRepository;
+    private EntryService entryService;
 
     @RequestMapping(value = "/{key}", method = RequestMethod.GET)
     public List<EntryEntity> getHistory(@PathVariable String key) {
-        List<EntryEntity> entries = entryRepository.findByKeyOrderByDateDesc(key);
-        return entries;
+        return entryService.getHistory(key);
     }
 
     @RequestMapping(value = "/{key}/{from}", method = RequestMethod.GET)
     public List<EntryEntity> getHistoryFromLast(@PathVariable String key, @PathVariable Long from) {
-        List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
-        return entries;
+        return entryService.getHistoryFromLast(key, from);
     }
 
     @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
     public EntryEntity getLast(@PathVariable String key) {
-        EntryEntity entry = entryRepository.findTopByKeyOrderByDateDesc(key);
-        return entry;
+        return entryService.getLast(key);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void add(@RequestBody EntryEntity entry) {
-        if (entry.getDate() == null) {
-            entry.setDate(System.currentTimeMillis());
-        }
-        entryRepository.insert(entry);
+    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public EntryEntity add(@RequestBody EntryEntity entry, HttpServletResponse response) {
+        return entryService.add(entry);
+    }
+
+    @RequestMapping(value = "/add/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public List<EntryEntity> addMany(@RequestBody List<EntryEntity> entries, HttpServletResponse response) {
+        return entryService.addMany(entries);
+    }
+
+    @ExceptionHandler(EntryServiceImpl.MandatoryFieldsMissingException.class)
+    public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("KEY and VALUE are mandatory!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    @ExceptionHandler(EntryServiceImpl.RestrictedKeyException.class)
+    public EntryEntity restrictedKeyExceptionHandler(Exception e) {
+        EntryServiceImpl.RestrictedKeyException exception = (EntryServiceImpl.RestrictedKeyException) e;
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Provided key [" + exception.getKey() + "] is restricted!")
+                .date(System.currentTimeMillis())
+                .build();
     }
 }
