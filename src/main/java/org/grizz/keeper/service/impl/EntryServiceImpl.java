@@ -63,6 +63,21 @@ public class EntryServiceImpl implements EntryService {
         return insertedEntries;
     }
 
+    @Override
+    public Long deleteAll(String key) {
+        return entryRepository.deleteByKey(key);
+    }
+
+    @Override
+    public Long deleteSingle(String key, Long date) {
+        return entryRepository.deleteByKeyAndDate(key, date);
+    }
+
+    @Override
+    public Long deleteOlderThan(String key, Long date) {
+        return entryRepository.deleteByKeyAndDateLessThan(key, date);
+    }
+
     private void fillDateIfNeeded(EntryEntity entry) {
         if (entry.getDate() == null) {
             entry.setDate(System.currentTimeMillis());

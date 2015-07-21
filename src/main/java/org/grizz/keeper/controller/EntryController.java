@@ -45,6 +45,21 @@ public class EntryController {
         return entryService.addMany(entries);
     }
 
+    @RequestMapping(value = "/delete/all/{key}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteAll(@PathVariable String key, HttpServletResponse response) {
+        return entryService.deleteAll(key);
+    }
+
+    @RequestMapping(value = "/delete/{key}/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteSingle(@PathVariable String key, @PathVariable Long date, HttpServletResponse response) {
+        return entryService.deleteSingle(key, date);
+    }
+
+    @RequestMapping(value = "/delete/{key}/older/than/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date, HttpServletResponse response) {
+        return entryService.deleteOlderThan(key, date);
+    }
+
     @ExceptionHandler(MandatoryFieldsMissingException.class)
     public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e) {
         return EntryEntity.builder()
