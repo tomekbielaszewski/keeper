@@ -1,9 +1,6 @@
 package org.grizz.keeper.model.impl;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.grizz.keeper.model.Entry;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  */
 @Data
 @Builder
+@ToString
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Document(collection = "entries")
 public class EntryEntity implements Entry {

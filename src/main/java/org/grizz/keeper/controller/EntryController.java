@@ -36,17 +36,33 @@ public class EntryController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EntryEntity add(@RequestBody EntryEntity entry, HttpServletResponse response) {
+    public EntryEntity add(@RequestBody EntryEntity entry) {
         return entryService.add(entry);
     }
 
     @RequestMapping(value = "/add/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<EntryEntity> addMany(@RequestBody List<EntryEntity> entries, HttpServletResponse response) {
+    public List<EntryEntity> addMany(@RequestBody List<EntryEntity> entries) {
         return entryService.addMany(entries);
     }
 
+    @RequestMapping(value = "/delete/all/{key}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteAll(@PathVariable String key) {
+        return entryService.deleteAll(key);
+    }
+
+    @RequestMapping(value = "/delete/{key}/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteSingle(@PathVariable String key, @PathVariable Long date) {
+        return entryService.deleteSingle(key, date);
+    }
+
+    @RequestMapping(value = "/delete/{key}/older/than/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
+        return entryService.deleteOlderThan(key, date);
+    }
+
     @ExceptionHandler(MandatoryFieldsMissingException.class)
-    public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e) {
+    public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         return EntryEntity.builder()
                 .key("ERROR")
                 .value("KEY and VALUE are mandatory!")
@@ -55,7 +71,8 @@ public class EntryController {
     }
 
     @ExceptionHandler(RestrictedKeyException.class)
-    public EntryEntity restrictedKeyExceptionHandler(Exception e) {
+    public EntryEntity restrictedKeyExceptionHandler(Exception e, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         RestrictedKeyException exception = (RestrictedKeyException) e;
         return EntryEntity.builder()
                 .key("ERROR")

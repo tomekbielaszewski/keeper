@@ -17,4 +17,10 @@ public interface EntryService {
     EntryEntity add(EntryEntity entry);
 
     List<EntryEntity> addMany(List<EntryEntity> entries);
+
+    Long deleteAll(String key);
+
+    Long deleteSingle(String key, Long date);
+
+    Long deleteOlderThan(String key, Long date);
 }
