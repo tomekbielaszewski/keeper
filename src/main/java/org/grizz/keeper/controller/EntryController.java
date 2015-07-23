@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Grizz on 2015-07-13.
  */
 @RestController
-@RequestMapping("/entry")
+@RequestMapping("/entries")
 public class EntryController {
     @Autowired
     private EntryService entryService;
@@ -35,27 +35,27 @@ public class EntryController {
         return entryService.getLast(key);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public EntryEntity add(@RequestBody EntryEntity entry) {
         return entryService.add(entry);
     }
 
-    @RequestMapping(value = "/add/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<EntryEntity> addMany(@RequestBody List<EntryEntity> entries) {
         return entryService.addMany(entries);
     }
 
-    @RequestMapping(value = "/delete/all/{key}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/all/{key}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long deleteAll(@PathVariable String key) {
         return entryService.deleteAll(key);
     }
 
-    @RequestMapping(value = "/delete/{key}/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{key}/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long deleteSingle(@PathVariable String key, @PathVariable Long date) {
         return entryService.deleteSingle(key, date);
     }
 
-    @RequestMapping(value = "/delete/{key}/older/than/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{key}/older/than/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
         return entryService.deleteOlderThan(key, date);
     }
