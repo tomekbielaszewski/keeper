@@ -64,11 +64,7 @@ public class EntryController {
     @ExceptionHandler(MandatoryFieldsMissingException.class)
     public EntryEntity mandatoryFieldsMissingExceptionHandler(Exception e, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return EntryEntity.builder()
-                .key("ERROR")
-                .value("KEY and VALUE are mandatory!")
-                .date(System.currentTimeMillis())
-                .build();
+        return ErrorEntry.keyAndValueAreMandatory();
     }
 
     @ExceptionHandler(RestrictedKeyException.class)
