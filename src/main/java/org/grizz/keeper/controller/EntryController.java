@@ -4,6 +4,7 @@ import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.RestrictedKeyException;
+import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -74,10 +75,6 @@ public class EntryController {
     public EntryEntity restrictedKeyExceptionHandler(Exception e, HttpServletResponse response) {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         RestrictedKeyException exception = (RestrictedKeyException) e;
-        return EntryEntity.builder()
-                .key("ERROR")
-                .value("Provided key [" + exception.getKey() + "] is restricted!")
-                .date(System.currentTimeMillis())
-                .build();
+        return ErrorEntry.restrictedKey(exception.getKey());
     }
 }
