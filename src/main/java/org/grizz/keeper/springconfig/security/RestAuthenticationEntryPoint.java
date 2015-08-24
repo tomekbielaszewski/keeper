@@ -1,4 +1,4 @@
-package org.grizz.keeper.springconfig;
+package org.grizz.keeper.springconfig.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.grizz.keeper.model.impl.EntryEntity;

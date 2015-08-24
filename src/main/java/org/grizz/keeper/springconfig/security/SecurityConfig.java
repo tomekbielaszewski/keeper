@@ -1,12 +1,15 @@
-package org.grizz.keeper.springconfig;
+package org.grizz.keeper.springconfig.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -15,6 +18,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
  */
 @Slf4j
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -23,17 +28,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationProvider restAuthenticationProvider;
 
+    @Autowired
+    private AccessDeniedHandler accessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
 
-        http.csrf().disable()
+        http
+                .csrf().disable()
                 .addFilterBefore(filter, CsrfFilter.class)
-                .authorizeRequests()
-                .anyRequest().anonymous()
-                .and()
                 .httpBasic()
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
@@ -42,8 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(restAuthenticationEntryPoint)
                 .and()
                 .logout()
-                .addLogoutHandler((rq, rs, auth) -> log.info(auth.getName() + " has logged out..."))
-                .logoutUrl("/logout");
+                .addLogoutHandler((rq, rs, auth) -> {
+                    if (auth != null) log.info(auth.getName() + " has logged out...");
+                })
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/users")
+                .deleteCookies("JSESSIONID")
+                .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 
 

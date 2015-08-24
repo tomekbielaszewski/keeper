@@ -1,4 +1,4 @@
-package org.grizz.keeper.springconfig;
+package org.grizz.keeper.springconfig.security;
 
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -24,6 +25,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
 
         List<GrantedAuthority> authorities = Lists.newArrayList();
+        authorities.add(new SimpleGrantedAuthority("USER"));
 
         log.info("Logging in: {}, {}, {}", login, password, Arrays.toString(authorities.toArray()));
 
