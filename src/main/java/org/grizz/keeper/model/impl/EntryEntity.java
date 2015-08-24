@@ -18,6 +18,8 @@ public class EntryEntity implements Entry {
     private String id;
     private String key;
     private String value;
+    private String owner;
+
     private Long date;
 
     public EntryEntity() {

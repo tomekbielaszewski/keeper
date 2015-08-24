@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public interface Entry {
     String getKey();
-
     String getValue();
 
+    String getOwner();
     Long getDate();
 }

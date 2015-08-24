@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.service.EntryService;
+import org.grizz.keeper.service.UserService;
+import org.grizz.keeper.service.exception.KeyAlreadyExistsException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.List;
 public class EntryServiceImpl implements EntryService {
     @Autowired
     private EntryRepository entryRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<EntryEntity> getHistory(String key) {
@@ -42,9 +46,11 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public EntryEntity add(EntryEntity entry) {
         if (validate(entry)) throw new MandatoryFieldsMissingException();
+        if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException();
         if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
 
         fillDateIfNeeded(entry);
+        entry.setOwner(userService.getCurrentUserLogin());
 
         EntryEntity insertedEntry = entryRepository.insert(entry);
         return insertedEntry;
@@ -54,9 +60,11 @@ public class EntryServiceImpl implements EntryService {
     public List<EntryEntity> addMany(List<EntryEntity> entries) {
         for (EntryEntity entry : entries) {
             if (validate(entry)) throw new MandatoryFieldsMissingException();
+            if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException();
             if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
 
             fillDateIfNeeded(entry);
+            entry.setOwner(userService.getCurrentUserLogin());
         }
 
         List<EntryEntity> insertedEntries = entryRepository.insert(entries);
@@ -78,18 +86,27 @@ public class EntryServiceImpl implements EntryService {
         return entryRepository.deleteByKeyAndDateLessThan(key, date);
     }
 
-    private void fillDateIfNeeded(EntryEntity entry) {
-        if (entry.getDate() == null) {
-            entry.setDate(System.currentTimeMillis());
-        }
-    }
-
     private boolean validate(EntryEntity entry) {
         return StringUtils.isEmpty(entry.getKey()) ||
                 StringUtils.isEmpty(entry.getValue());
     }
 
+    private boolean validateUserOwnership(EntryEntity entry) {
+        EntryEntity entryFromDB = entryRepository.findFirstByKey(entry.getKey());
+        if (entryFromDB == null) {
+            return false;
+        }
+        String currentUserLogin = userService.getCurrentUserLogin();
+        return !currentUserLogin.equals(entryFromDB.getOwner());
+    }
+
     private boolean hasRestrictedKey(EntryEntity entry) {
         return "ERROR".equals(entry.getKey());
+    }
+
+    private void fillDateIfNeeded(EntryEntity entry) {
+        if (entry.getDate() == null) {
+            entry.setDate(System.currentTimeMillis());
+        }
     }
 }

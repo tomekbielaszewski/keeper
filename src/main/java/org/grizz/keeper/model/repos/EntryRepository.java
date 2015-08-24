@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Grizz on 2015-07-14.
  */
-public interface EntryRepository extends MongoRepository<EntryEntity, String> {
+public interface EntryRepository extends MongoRepository<EntryEntity, String>, EntryRepositoryCustom {
     List<EntryEntity> findByKeyOrderByDateDesc(String key);
     EntryEntity findTopByKeyOrderByDateDesc(String key);
     List<EntryEntity> findByKeyAndDateGreaterThanEqualOrderByDateDesc(String key, Long date);
@@ -18,4 +18,6 @@ public interface EntryRepository extends MongoRepository<EntryEntity, String> {
     Long deleteByKeyAndDate(String key, Long date);
 
     Long deleteByKeyAndDateLessThan(String key, Long date);
+
+    EntryEntity findFirstByKey(String key);
 }

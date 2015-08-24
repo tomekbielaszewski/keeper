@@ -101,4 +101,6 @@ public class EntryController {
         RestrictedKeyException exception = (RestrictedKeyException) e;
         return ErrorEntry.restrictedKey(exception.getKey());
     }
+
+    //TODO add exception handler KeyAlreadyExistsException
 }

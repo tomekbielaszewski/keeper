@@ -2,6 +2,7 @@ package org.grizz.keeper.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.User;
+import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.model.repos.UserRepository;
 import org.grizz.keeper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +21,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private EntryRepository entryRepo;
 
     @Override
     public List<? extends User> getAll() {
@@ -54,6 +58,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> getCurrentUserKeys() {
         String currentUserLogin = getCurrentUserLogin();
+        List userOwnedKeys = entryRepo.findUserOwnedKeys(currentUserLogin);
+        Object[] objects = userOwnedKeys.toArray();
+        log.info(Arrays.toString(objects));
         //TODO: get userKeys somehow
         return null;
     }
