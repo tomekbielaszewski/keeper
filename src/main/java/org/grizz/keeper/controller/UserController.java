@@ -30,7 +30,7 @@ public class UserController {
     @RequestMapping(value = "/keys", method = RequestMethod.GET)
     public List<String> getCurrentUserKeys() {
         List<String> currentUserKeys = userService.getCurrentUserKeys();
-        log.info("{} listed all his keys. Amount {}", userService.getCurrentUsersLogin(), currentUserKeys.size());
+        log.info("{} listed all his keys. Amount {}", userService.getCurrentUserLogin(), currentUserKeys.size());
         return currentUserKeys;
     }
 
@@ -38,7 +38,7 @@ public class UserController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<? extends User> getList() {
         List<? extends User> allUsers = userService.getAll();
-        log.info("ADMIN: {} listed all users. Amount {}", userService.getCurrentUsersLogin(), allUsers.size());
+        log.info("ADMIN: {} listed all users. Amount {}", userService.getCurrentUserLogin(), allUsers.size());
         return allUsers;
     }
 
@@ -46,7 +46,7 @@ public class UserController {
     @RequestMapping(value = "/{login}", method = RequestMethod.GET)
     public User getByLogin(@PathVariable String login) {
         User user = userService.getByLogin(login);
-        log.info("ADMIN: {} showed user with login {}", userService.getCurrentUsersLogin(), user.getLogin());
+        log.info("ADMIN: {} showed user with login {}", userService.getCurrentUserLogin(), user.getLogin());
         return user;
     }
 }

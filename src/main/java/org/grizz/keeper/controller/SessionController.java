@@ -24,7 +24,7 @@ public class SessionController {
 
     @RequestMapping(value = "/insufficientPermissions", method = RequestMethod.GET)
     public Entry denied() {
-        String currentUser = userService.getCurrentUsersLogin();
+        String currentUser = userService.getCurrentUserLogin();
         if (currentUser != null) {
             log.warn("User [{}] tried to access prohibited area", currentUser);
         }

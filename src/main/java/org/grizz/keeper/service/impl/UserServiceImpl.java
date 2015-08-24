@@ -32,13 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        String currentUserLogin = this.getCurrentUsersLogin();
+        String currentUserLogin = this.getCurrentUserLogin();
         User currentUser = this.getByLogin(currentUserLogin);
         return currentUser;
     }
 
     @Override
-    public String getCurrentUsersLogin() {
+    public String getCurrentUserLogin() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUserLogin;
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getCurrentUserKeys() {
-        User currentUser = getCurrentUser();
+        String currentUserLogin = getCurrentUserLogin();
         //TODO: get userKeys somehow
         return null;
     }

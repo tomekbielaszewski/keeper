@@ -16,5 +16,5 @@ public interface UserService {
 
     User getCurrentUser();
 
-    String getCurrentUsersLogin();
+    String getCurrentUserLogin();
 }
