@@ -29,4 +29,12 @@ public class ErrorEntry {
                 .date(System.currentTimeMillis())
                 .build();
     }
+
+    public static EntryEntity insufficientPermissions() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Insufficient permissions!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
 }

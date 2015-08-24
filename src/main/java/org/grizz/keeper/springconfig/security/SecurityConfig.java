@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -27,9 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationProvider restAuthenticationProvider;
-
-    @Autowired
-    private AccessDeniedHandler accessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -52,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     if (auth != null) log.info(auth.getName() + " has logged out...");
                 })
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/users")
+                .logoutSuccessUrl("/logout/success")
                 .deleteCookies("JSESSIONID")
                 .and()
-                .exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+                .exceptionHandling().accessDeniedPage("/insufficientPermissions");
     }
 
 

@@ -13,7 +13,14 @@
     "c2730c4e-d303-80ac-8bf5-44acb0699602",
     "1bb7241f-06f2-31ec-fd51-0c891e8f3ee5",
     "a5d19558-696e-8a5a-2bad-38662bd8f654",
-    "dc278686-ae25-16e8-7799-400ba7a11ecc"
+    "dc278686-ae25-16e8-7799-400ba7a11ecc",
+    "3e948c82-fd13-16d1-396e-c78bcf860679",
+    "368fc257-5a64-646f-9a90-e5810df3af8e",
+    "faa8cfbe-7c99-98e5-72ad-be66d36047a1",
+    "4f02b420-3b7c-a8d6-2051-37418cd2fd6f",
+    "87cedbdc-c5e4-9c74-2849-70690e332ad7",
+    "364a9b95-a6f5-e613-3c18-a19c29906856",
+    "6ac48932-bcdb-2dd8-f6c5-f342d63f8bfe"
   ],
   "requests": [
     {
@@ -46,6 +53,31 @@
     },
     {
       "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "364a9b95-a6f5-e613-3c18-a19c29906856",
+      "name": "login as user",
+      "description": "",
+      "url": "http://localhost:8080/login",
+      "method": "POST",
+      "headers": "",
+      "data": [
+        {
+          "key": "username",
+          "value": "user",
+          "type": "text"
+        },
+        {
+          "key": "password",
+          "value": "user",
+          "type": "text"
+        }
+      ],
+      "dataMode": "urlencoded",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1440419011204
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
       "id": "364b14cc-c698-eb08-6412-2c65ccee2e7a",
       "name": "Add many entries (one with null key)",
       "description": "",
@@ -57,6 +89,20 @@
       "timestamp": 0,
       "version": 2,
       "time": 1437663553623
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "368fc257-5a64-646f-9a90-e5810df3af8e",
+      "name": "get current user",
+      "description": "",
+      "url": "http://localhost:8080/users/",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
     },
     {
       "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
@@ -74,6 +120,34 @@
     },
     {
       "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "3e948c82-fd13-16d1-396e-c78bcf860679",
+      "name": "list users",
+      "description": "",
+      "url": "http://localhost:8080/users/list",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "4f02b420-3b7c-a8d6-2051-37418cd2fd6f",
+      "name": "get user by login",
+      "description": "",
+      "url": "http://localhost:8080/users/grizz",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
       "id": "576d6c9f-3e5f-e4b4-8e80-79ebcc2e714e",
       "name": "Add many entries (one with restricted key)",
       "description": "",
@@ -85,6 +159,56 @@
       "timestamp": 0,
       "version": 2,
       "time": 1437663563101
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "6ac48932-bcdb-2dd8-f6c5-f342d63f8bfe",
+      "name": "logout",
+      "description": "",
+      "url": "http://localhost:8080/logout",
+      "method": "GET",
+      "headers": "",
+      "data": [
+        {
+          "key": "username",
+          "value": "grizz",
+          "type": "text"
+        },
+        {
+          "key": "password",
+          "value": "grizz",
+          "type": "text"
+        }
+      ],
+      "dataMode": "urlencoded",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "87cedbdc-c5e4-9c74-2849-70690e332ad7",
+      "name": "login as admin",
+      "description": "",
+      "url": "http://localhost:8080/login",
+      "method": "POST",
+      "headers": "",
+      "data": [
+        {
+          "key": "username",
+          "value": "grizz",
+          "type": "text"
+        },
+        {
+          "key": "password",
+          "value": "grizz",
+          "type": "text"
+        }
+      ],
+      "dataMode": "urlencoded",
+      "timestamp": 0,
+      "version": 2,
+      "time": 1440418994617
     },
     {
       "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
@@ -169,6 +293,20 @@
       "timestamp": 0,
       "version": 2,
       "time": 1437663519611
+    },
+    {
+      "collectionId": "c57a39b2-acd0-313f-929d-fb028f31321c",
+      "id": "faa8cfbe-7c99-98e5-72ad-be66d36047a1",
+      "name": "get current user keys",
+      "description": "",
+      "url": "http://localhost:8080/users/keys",
+      "method": "GET",
+      "headers": "",
+      "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
     }
   ]
 }

@@ -7,7 +7,7 @@ import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Grizz on 2015-07-20.
  */
 @Slf4j
-@Component
+@Service
 public class EntryServiceImpl implements EntryService {
     @Autowired
     private EntryRepository entryRepository;

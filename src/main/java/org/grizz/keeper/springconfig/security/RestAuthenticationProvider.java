@@ -27,6 +27,10 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthority> authorities = Lists.newArrayList();
         authorities.add(new SimpleGrantedAuthority("USER"));
 
+        if ("grizz".equals(login)) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        }
+
         log.info("Logging in: {}, {}, {}", login, password, Arrays.toString(authorities.toArray()));
 
         return new UsernamePasswordAuthenticationToken(login, password, authorities);
