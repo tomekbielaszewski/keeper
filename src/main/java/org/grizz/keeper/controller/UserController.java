@@ -1,5 +1,6 @@
 package org.grizz.keeper.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.User;
 import org.grizz.keeper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by tomasz.bielaszewski on 2015-08-24.
  */
+@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -27,18 +29,24 @@ public class UserController {
 
     @RequestMapping(value = "/keys", method = RequestMethod.GET)
     public List<String> getCurrentUserKeys() {
-        return userService.getCurrentUserKeys();
+        List<String> currentUserKeys = userService.getCurrentUserKeys();
+        log.info("{} listed all his keys. Amount {}", userService.getCurrentUsersLogin(), currentUserKeys.size());
+        return currentUserKeys;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<? extends User> getList() {
-        return userService.getAll();
+        List<? extends User> allUsers = userService.getAll();
+        log.info("ADMIN: {} listed all users. Amount {}", userService.getCurrentUsersLogin(), allUsers.size());
+        return allUsers;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/{login}", method = RequestMethod.GET)
     public User getByLogin(@PathVariable String login) {
-        return userService.getByLogin(login);
+        User user = userService.getByLogin(login);
+        log.info("ADMIN: {} showed user with login {}", userService.getCurrentUsersLogin(), user.getLogin());
+        return user;
     }
 }

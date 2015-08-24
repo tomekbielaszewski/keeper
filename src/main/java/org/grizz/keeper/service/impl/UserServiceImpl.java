@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -33,6 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
+        String currentUserLogin = this.getCurrentUsersLogin();
+        User currentUser = this.getByLogin(currentUserLogin);
+        return currentUser;
+    }
+
+    @Override
+    public String getCurrentUsersLogin() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String currentUserLogin;
 
@@ -42,12 +48,7 @@ public class UserServiceImpl implements UserService {
             currentUserLogin = principal.toString();
         }
 
-        if (StringUtils.isEmpty(currentUserLogin)) {
-            return null;
-        }
-
-        User currentUser = this.getByLogin(currentUserLogin);
-        return currentUser;
+        return currentUserLogin;
     }
 
     @Override

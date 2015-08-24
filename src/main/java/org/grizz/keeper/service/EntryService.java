@@ -10,7 +10,7 @@ import java.util.List;
 public interface EntryService {
     List<EntryEntity> getHistory(String key);
 
-    List<EntryEntity> getHistoryFromLast(String key, Long from);
+    List<EntryEntity> getHistorySince(String key, Long from);
 
     EntryEntity getLast(String key);
 

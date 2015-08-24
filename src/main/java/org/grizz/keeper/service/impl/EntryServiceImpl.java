@@ -28,7 +28,7 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<EntryEntity> getHistoryFromLast(String key, Long from) {
+    public List<EntryEntity> getHistorySince(String key, Long from) {
         List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
         return entries;
     }

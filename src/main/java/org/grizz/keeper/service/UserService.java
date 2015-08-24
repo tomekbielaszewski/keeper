@@ -15,4 +15,6 @@ public interface UserService {
     List<String> getCurrentUserKeys();
 
     User getCurrentUser();
+
+    String getCurrentUsersLogin();
 }
