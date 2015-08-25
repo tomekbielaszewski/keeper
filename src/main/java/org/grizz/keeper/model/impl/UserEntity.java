@@ -5,6 +5,8 @@ import org.grizz.keeper.model.User;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Set;
+
 /**
  * Created by tomasz.bielaszewski on 2015-08-24.
  */
@@ -18,6 +20,7 @@ public class UserEntity implements User {
     private String id;
     private String login;
     private String passwordHash;
+    private Set<String> roles;
 
     public UserEntity() {
     }

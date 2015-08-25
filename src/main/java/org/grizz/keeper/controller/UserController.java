@@ -29,6 +29,7 @@ public class UserController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public User getCurrentUser() {
         User currentUser = userService.getCurrentUser();
+        ((UserEntity)currentUser).setPasswordHash(null);
         return currentUser;
     }
 
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST)
     public User createNew(@RequestBody UserEntity user) {
         User newUser = userService.add(user);
         log.info("ADMIN: {} added new user with login {}", userService.getCurrentUserLogin(), newUser.getLogin());

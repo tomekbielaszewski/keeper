@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         if (validateUserAlreadyExists(user)) throw new UserAlreadyExistsException(user.getLogin());
 
         String password = user.getPasswordHash();
-        user.setPasswordHash(HashingUtils.getHash(password));
+        user.setPasswordHash(HashingUtils.hash(password));
         user.setId(null);
 
         UserEntity newUser = userRepo.insert(user);
