@@ -27,6 +27,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthority> authorities = Lists.newArrayList();
         authorities.add(new SimpleGrantedAuthority("USER"));
 
+        //TODO zaimplementowac pobieranie uzytkownika z bazy i hashowanie podanego hasla
         if ("grizz".equals(login)) {
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
         }

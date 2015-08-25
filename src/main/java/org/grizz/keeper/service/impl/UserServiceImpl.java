@@ -2,13 +2,18 @@ package org.grizz.keeper.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.User;
+import org.grizz.keeper.model.impl.UserEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.model.repos.UserRepository;
 import org.grizz.keeper.service.UserService;
+import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.UserAlreadyExistsException;
+import org.grizz.keeper.utils.HashingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -55,9 +60,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<String> getUserKeys(String login) {
+        List userOwnedKeys = entryRepo.findUserOwnedKeys(login);
+        return userOwnedKeys;
+    }
+
+    @Override
     public List<String> getCurrentUserKeys() {
         String currentUserLogin = getCurrentUserLogin();
-        List userOwnedKeys = entryRepo.findUserOwnedKeys(currentUserLogin);
-        return userOwnedKeys;
+        return getUserKeys(currentUserLogin);
+    }
+
+    @Override
+    public User add(UserEntity user) {
+        if (validateUser(user)) throw new MandatoryFieldsMissingException();
+        if (validateUserAlreadyExists(user)) throw new UserAlreadyExistsException(user.getLogin());
+
+        String password = user.getPasswordHash();
+        user.setPasswordHash(HashingUtils.getHash(password));
+        user.setId(null);
+
+        UserEntity newUser = userRepo.insert(user);
+
+        return newUser;
+    }
+
+    private boolean validateUser(UserEntity user) {
+        if (StringUtils.isEmpty(user.getLogin())) return true;
+        if (StringUtils.isEmpty(user.getPasswordHash())) return true;
+        return false;
+    }
+
+    private boolean validateUserAlreadyExists(UserEntity user) {
+        UserEntity existingUser = userRepo.findByLogin(user.getLogin());
+        return existingUser != null;
     }
 }

@@ -46,4 +46,20 @@ public class ErrorEntry {
                 .date(System.currentTimeMillis())
                 .build();
     }
+
+    public static Entry userFieldsMissing() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("LOGIN and PASSWORD are mandatory!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry userAlreadyExists(String login) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("User [" + login + "] already exists!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
 }

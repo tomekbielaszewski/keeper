@@ -1,6 +1,7 @@
 package org.grizz.keeper.service;
 
 import org.grizz.keeper.model.User;
+import org.grizz.keeper.model.impl.UserEntity;
 
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface UserService {
     User getCurrentUser();
 
     String getCurrentUserLogin();
+
+    List<String> getUserKeys(String login);
+
+    User add(UserEntity user);
 }
