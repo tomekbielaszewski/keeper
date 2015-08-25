@@ -5,6 +5,7 @@ import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.UserService;
+import org.grizz.keeper.service.exception.KeyAlreadyExistsException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.RestrictedKeyException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
@@ -102,5 +103,10 @@ public class EntryController {
         return ErrorEntry.restrictedKey(exception.getKey());
     }
 
-    //TODO add exception handler KeyAlreadyExistsException
+    @ExceptionHandler(KeyAlreadyExistsException.class)
+    public Entry keyAlreadyExistsExceptionHandler(Exception e, HttpServletResponse response) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        KeyAlreadyExistsException exception = (KeyAlreadyExistsException) e;
+        return ErrorEntry.keyAlreadyExists(exception.getKey());
+    }
 }

@@ -46,7 +46,7 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public EntryEntity add(EntryEntity entry) {
         if (validate(entry)) throw new MandatoryFieldsMissingException();
-        if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException();
+        if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException(entry.getKey());
         if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
 
         fillDateIfNeeded(entry);
@@ -60,7 +60,7 @@ public class EntryServiceImpl implements EntryService {
     public List<EntryEntity> addMany(List<EntryEntity> entries) {
         for (EntryEntity entry : entries) {
             if (validate(entry)) throw new MandatoryFieldsMissingException();
-            if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException();
+            if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException(entry.getKey());
             if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
 
             fillDateIfNeeded(entry);

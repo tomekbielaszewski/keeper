@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -59,9 +58,6 @@ public class UserServiceImpl implements UserService {
     public List<String> getCurrentUserKeys() {
         String currentUserLogin = getCurrentUserLogin();
         List userOwnedKeys = entryRepo.findUserOwnedKeys(currentUserLogin);
-        Object[] objects = userOwnedKeys.toArray();
-        log.info(Arrays.toString(objects));
-        //TODO: get userKeys somehow
-        return null;
+        return userOwnedKeys;
     }
 }
