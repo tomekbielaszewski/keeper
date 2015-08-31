@@ -7,10 +7,7 @@ import java.util.Set;
  */
 public interface User {
     String getId();
-
     String getLogin();
-
     String getPasswordHash();
-
     Set<String> getRoles();
 }

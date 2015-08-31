@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public interface Entry {
     String getKey();
     String getValue();
-
     String getOwner();
     Long getDate();
 }

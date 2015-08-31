@@ -32,28 +32,28 @@ public class EntryController {
 
     @RequestMapping(value = "/{key}", method = RequestMethod.GET)
     public List<? extends Entry> getHistory(@PathVariable String key) {
-        List<EntryEntity> history = entryService.getHistory(key);
+        List<? extends Entry> history = entryService.getHistory(key);
         log.info("{} got history of [{}] entries. Amount: {}", userService.getCurrentUserLogin(), key, history.size());
         return history;
     }
 
     @RequestMapping(value = "/{key}/{since}", method = RequestMethod.GET)
     public List<? extends Entry> getHistorySince(@PathVariable String key, @PathVariable Long since) {
-        List<EntryEntity> history = entryService.getHistorySince(key, since);
+        List<? extends Entry> history = entryService.getHistorySince(key, since);
         log.info("{} got history of [{}] entries since [{}]. Amount: {}", userService.getCurrentUserLogin(), key, new Date(since), history.size());
         return history;
     }
 
     @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
-    public EntryEntity getLast(@PathVariable String key) {
+    public Entry getLast(@PathVariable String key) {
         log.info("{} got last entry of [{}]", userService.getCurrentUserLogin(), key);
         return entryService.getLast(key);
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public EntryEntity add(@RequestBody EntryEntity entry) {
-        EntryEntity added = entryService.add(entry);
+    public Entry add(@RequestBody EntryEntity entry) {
+        Entry added = entryService.add(entry);
         log.info("{} added new entry of [{}]", userService.getCurrentUserLogin(), entry.getKey());
         return added;
     }
@@ -61,7 +61,7 @@ public class EntryController {
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<? extends Entry> addMany(@RequestBody List<EntryEntity> entries) {
-        List<EntryEntity> addedEntries = entryService.addMany(entries);
+        List<? extends Entry> addedEntries = entryService.addMany(entries);
         log.info("{} added many entries. Amount: {}", userService.getCurrentUserLogin(), entries.size());
         return addedEntries;
     }
