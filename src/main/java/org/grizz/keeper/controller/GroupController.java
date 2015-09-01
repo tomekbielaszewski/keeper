@@ -30,10 +30,17 @@ public class GroupController {
         return group;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
     public List<? extends Group> getCurrentUserGroups() {
         List<? extends Group> groups = groupService.getCurrentUserGroups();
         log.info("{} got his own groups. Amount: {}", userService.getCurrentUserLogin(), groups.size());
+        return groups;
+    }
+
+    @RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
+    public List<? extends Group> getUserGroups(@PathVariable String login) {
+        List<? extends Group> groups = groupService.getUserGroups(login);
+        log.info("{} got groups of user {}. Amount: {}", userService.getCurrentUserLogin(), login, groups.size());
         return groups;
     }
 
@@ -57,6 +64,4 @@ public class GroupController {
         log.info("{} last entries from group {}. Amount {}", userService.getCurrentUserLogin(), name, groupedEntries.size());
         return groupedEntries;
     }
-
-
 }

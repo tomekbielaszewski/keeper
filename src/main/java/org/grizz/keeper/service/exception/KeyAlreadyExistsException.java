@@ -8,7 +8,7 @@ import lombok.Getter;
 
 public class KeyAlreadyExistsException extends RuntimeException {
     @Getter
-    private String key;
+    private final String key;
 
     public KeyAlreadyExistsException(String key) {
         this.key = key;

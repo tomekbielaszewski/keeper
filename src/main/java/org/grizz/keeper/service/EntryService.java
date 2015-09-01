@@ -12,6 +12,8 @@ public interface EntryService {
 
     List<EntryEntity> getHistorySince(String key, Long from);
 
+    boolean keyExist(String key);
+
     EntryEntity getLast(String key);
 
     EntryEntity add(EntryEntity entry);

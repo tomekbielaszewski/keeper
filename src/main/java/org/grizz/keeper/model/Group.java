@@ -8,5 +8,6 @@ import java.util.List;
 public interface Group {
     String getId();
     String getName();
+    String getOwner();
     List<String> getKeys();
 }

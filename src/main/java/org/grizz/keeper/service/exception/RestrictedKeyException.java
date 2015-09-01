@@ -7,7 +7,7 @@ import lombok.Getter;
  */
 public class RestrictedKeyException extends RuntimeException {
     @Getter
-    private String key;
+    private final String key;
 
     public RestrictedKeyException(String key) {
         this.key = key;

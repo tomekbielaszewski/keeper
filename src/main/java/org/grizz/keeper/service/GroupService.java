@@ -19,4 +19,6 @@ public interface GroupService {
     Group update(GroupEntity group);
 
     List<? extends Entry> getEntries(String name);
+
+    List<? extends Group> getUserGroups(String login);
 }

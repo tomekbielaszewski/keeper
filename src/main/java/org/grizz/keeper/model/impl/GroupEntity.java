@@ -18,5 +18,6 @@ public class GroupEntity implements org.grizz.keeper.model.Group {
     @Id
     private String id;
     private String name;
+    private String owner;
     private List<String> keys;
 }

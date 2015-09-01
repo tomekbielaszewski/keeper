@@ -3,13 +3,13 @@ package org.grizz.keeper.service.exception;
 import lombok.Getter;
 
 /**
- * Created by Grizz on 2015-08-25.
+ * Created by tomasz.bielaszewski on 2015-09-01.
  */
-public class UserAlreadyExistsException extends RuntimeException {
+public class NoSuchUserException extends RuntimeException {
     @Getter
     private final String login;
 
-    public UserAlreadyExistsException(String login) {
+    public NoSuchUserException(String login) {
         this.login = login;
     }
 }
