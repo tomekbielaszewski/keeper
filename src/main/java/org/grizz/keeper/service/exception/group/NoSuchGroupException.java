@@ -1,4 +1,4 @@
-package org.grizz.keeper.service.exception;
+package org.grizz.keeper.service.exception.group;
 
 import lombok.Getter;
 

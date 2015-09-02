@@ -20,4 +20,7 @@ public class GroupEntity implements org.grizz.keeper.model.Group {
     private String name;
     private String owner;
     private List<String> keys;
+
+    public GroupEntity() {
+    }
 }

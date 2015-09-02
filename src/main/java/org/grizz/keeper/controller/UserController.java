@@ -6,7 +6,7 @@ import org.grizz.keeper.model.User;
 import org.grizz.keeper.model.impl.UserEntity;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
-import org.grizz.keeper.service.exception.UserAlreadyExistsException;
+import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;

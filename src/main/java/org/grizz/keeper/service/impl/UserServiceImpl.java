@@ -7,7 +7,7 @@ import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.model.repos.UserRepository;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
-import org.grizz.keeper.service.exception.UserAlreadyExistsException;
+import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
 import org.grizz.keeper.utils.HashingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

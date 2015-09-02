@@ -1,6 +1,7 @@
 package org.grizz.keeper.service;
 
 import org.grizz.keeper.model.Entry;
+import org.grizz.keeper.model.EntryGroup;
 import org.grizz.keeper.model.Group;
 import org.grizz.keeper.model.impl.GroupEntity;
 
@@ -18,7 +19,7 @@ public interface GroupService {
 
     Group update(GroupEntity group);
 
-    List<? extends Entry> getEntries(String name);
+    EntryGroup getEntries(String name);
 
     List<? extends Group> getUserGroups(String login);
 }

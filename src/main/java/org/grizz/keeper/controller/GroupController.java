@@ -2,11 +2,13 @@ package org.grizz.keeper.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
+import org.grizz.keeper.model.EntryGroup;
 import org.grizz.keeper.model.Group;
 import org.grizz.keeper.model.impl.GroupEntity;
 import org.grizz.keeper.service.GroupService;
 import org.grizz.keeper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,14 +46,14 @@ public class GroupController {
         return groups;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Group createUserGroup(@RequestBody GroupEntity group) {
         Group newGroup = groupService.add(group);
         log.info("{} added new group with name {}.", userService.getCurrentUserLogin(), newGroup.getName());
         return newGroup;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Group updateUserGroup(@RequestBody GroupEntity group) {
         Group updatedGroup = groupService.update(group);
         log.info("{} updated group with name {}.", userService.getCurrentUserLogin(), updatedGroup.getName());
@@ -59,9 +61,12 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/entries/{name}", method = RequestMethod.GET)
-    public List<? extends Entry> getGroupedEntries(@PathVariable String name) {
-        List<? extends Entry> groupedEntries = groupService.getEntries(name);
-        log.info("{} last entries from group {}. Amount {}", userService.getCurrentUserLogin(), name, groupedEntries.size());
-        return groupedEntries;
+    public EntryGroup getGroupedEntries(@PathVariable String name) {
+        EntryGroup entryGroup = groupService.getEntries(name);
+        log.info("{} got last entries from group {}.", userService.getCurrentUserLogin(), name);
+        return entryGroup;
     }
+
+    //TODO secure endpoints
+    //TODO exception handling
 }

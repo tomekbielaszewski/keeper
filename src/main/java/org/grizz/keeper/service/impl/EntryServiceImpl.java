@@ -5,9 +5,9 @@ import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.UserService;
-import org.grizz.keeper.service.exception.KeyAlreadyExistsException;
+import org.grizz.keeper.service.exception.entry.KeyAlreadyExistsException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
-import org.grizz.keeper.service.exception.RestrictedKeyException;
+import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -35,6 +35,11 @@ public class EntryServiceImpl implements EntryService {
     public List<EntryEntity> getHistorySince(String key, Long from) {
         List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
         return entries;
+    }
+
+    @Override
+    public boolean keyExist(String key) {
+        return entryRepository.findFirstByKey(key) != null;
     }
 
     @Override
