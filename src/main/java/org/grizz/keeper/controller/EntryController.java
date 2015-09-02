@@ -67,7 +67,7 @@ public class EntryController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/all/{key}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/all/{key}", method = RequestMethod.DELETE)
     public Long deleteAll(@PathVariable String key) {
         Long amountOfDeleted = entryService.deleteAll(key);
         log.info("{} deleted all {} entries of {}", userService.getCurrentUserLogin(), amountOfDeleted, key);
@@ -75,7 +75,7 @@ public class EntryController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/{key}/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{key}/{date}", method = RequestMethod.DELETE)
     public Long deleteSingle(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteSingle(key, date);
         log.info("{} deleted {} entry of {} with date [{}]", userService.getCurrentUserLogin(), amountOfDeleted, key, new Date(date));
@@ -83,7 +83,7 @@ public class EntryController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/{key}/older/than/{date}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{key}/older/than/{date}", method = RequestMethod.DELETE)
     public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteOlderThan(key, date);
         log.info("{} deleted {} entries of {} older than {}", userService.getCurrentUserLogin(), amountOfDeleted, key, new Date(date));
