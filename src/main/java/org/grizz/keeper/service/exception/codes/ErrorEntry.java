@@ -47,7 +47,7 @@ public class ErrorEntry {
                 .build();
     }
 
-    public static Entry keyAlreadyExists(String key) {
+    public static Entry invalidKeyOwner(String key) {
         return EntryEntity.builder()
                 .key("ERROR")
                 .value("Provided key [" + key + "] belongs to somebody else!")

@@ -5,8 +5,9 @@ import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.UserService;
-import org.grizz.keeper.service.exception.entry.KeyAlreadyExistsException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.entry.InvalidKeyOwnerException;
+import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
 import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,14 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public List<EntryEntity> getHistory(String key) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         List<EntryEntity> entries = entryRepository.findByKeyOrderByDateDesc(key);
         return entries;
     }
 
     @Override
     public List<EntryEntity> getHistorySince(String key, Long from) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
         return entries;
     }
@@ -44,15 +47,16 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public EntryEntity getLast(String key) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         EntryEntity entry = entryRepository.findTopByKeyOrderByDateDesc(key);
         return entry;
     }
 
     @Override
     public EntryEntity add(EntryEntity entry) {
-        if (validate(entry)) throw new MandatoryFieldsMissingException();
-        if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException(entry.getKey());
-        if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
+        validate(entry);
+        validateUserOwnership(entry);
+        hasRestrictedKey(entry);
 
         fillDateIfNeeded(entry);
         entry.setOwner(userService.getCurrentUserLogin());
@@ -64,9 +68,9 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public List<EntryEntity> addMany(List<EntryEntity> entries) {
         for (EntryEntity entry : entries) {
-            if (validate(entry)) throw new MandatoryFieldsMissingException();
-            if (validateUserOwnership(entry)) throw new KeyAlreadyExistsException(entry.getKey());
-            if (hasRestrictedKey(entry)) throw new RestrictedKeyException(entry.getKey());
+            validate(entry);
+            validateUserOwnership(entry);
+            hasRestrictedKey(entry);
 
             fillDateIfNeeded(entry);
             entry.setOwner(userService.getCurrentUserLogin());
@@ -78,35 +82,38 @@ public class EntryServiceImpl implements EntryService {
 
     @Override
     public Long deleteAll(String key) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         return entryRepository.deleteByKey(key);
     }
 
     @Override
     public Long deleteSingle(String key, Long date) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         return entryRepository.deleteByKeyAndDate(key, date);
     }
 
     @Override
     public Long deleteOlderThan(String key, Long date) {
+        if (!keyExist(key)) throw new KeyDoesNotExistException(key);
         return entryRepository.deleteByKeyAndDateLessThan(key, date);
     }
 
-    private boolean validate(EntryEntity entry) {
-        return StringUtils.isEmpty(entry.getKey()) ||
-                StringUtils.isEmpty(entry.getValue());
+    private void validate(EntryEntity entry) {
+        if (StringUtils.isEmpty(entry.getKey()) ||
+                StringUtils.isEmpty(entry.getValue())) throw new MandatoryFieldsMissingException();
     }
 
-    private boolean validateUserOwnership(EntryEntity entry) {
+    private void validateUserOwnership(EntryEntity entry) {
         EntryEntity entryFromDB = entryRepository.findFirstByKey(entry.getKey());
-        if (entryFromDB == null) {
-            return false;
+        if (entryFromDB != null) {
+            String currentUserLogin = userService.getCurrentUserLogin();
+            if (!currentUserLogin.equals(entryFromDB.getOwner())) throw new InvalidKeyOwnerException(entry.getKey());
         }
-        String currentUserLogin = userService.getCurrentUserLogin();
-        return !currentUserLogin.equals(entryFromDB.getOwner());
     }
 
-    private boolean hasRestrictedKey(EntryEntity entry) {
-        return "ERROR".equals(entry.getKey());
+    private void hasRestrictedKey(EntryEntity entry) {
+        if ("ERROR".equals(entry.getKey()))
+            throw new RestrictedKeyException(entry.getKey());
     }
 
     private void fillDateIfNeeded(EntryEntity entry) {

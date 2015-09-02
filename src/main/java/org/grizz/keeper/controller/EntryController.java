@@ -5,8 +5,9 @@ import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.UserService;
-import org.grizz.keeper.service.exception.entry.KeyAlreadyExistsException;
+import org.grizz.keeper.service.exception.entry.InvalidKeyOwnerException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
 import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -105,9 +105,16 @@ public class EntryController {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(KeyAlreadyExistsException.class)
-    public Entry keyAlreadyExistsExceptionHandler(Exception e) {
-        KeyAlreadyExistsException exception = (KeyAlreadyExistsException) e;
-        return ErrorEntry.keyAlreadyExists(exception.getKey());
+    @ExceptionHandler(InvalidKeyOwnerException.class)
+    public Entry invalidKeyOwnerExceptionHandler(Exception e) {
+        InvalidKeyOwnerException exception = (InvalidKeyOwnerException) e;
+        return ErrorEntry.invalidKeyOwner(exception.getKey());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(KeyDoesNotExistException.class)
+    public Entry keyDoesNotExistExceptionHandler(Exception e) {
+        KeyDoesNotExistException exception = (KeyDoesNotExistException) e;
+        return ErrorEntry.keyDoesNotExist(exception.getKey());
     }
 }
