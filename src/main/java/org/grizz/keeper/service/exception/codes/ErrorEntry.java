@@ -31,6 +31,14 @@ public class ErrorEntry {
                 .build();
     }
 
+    public static EntryEntity badLoginPassword() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Bad login or password!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
     public static EntryEntity insufficientPermissions() {
         return EntryEntity.builder()
                 .key("ERROR")
@@ -58,7 +66,71 @@ public class ErrorEntry {
     public static Entry userAlreadyExists(String login) {
         return EntryEntity.builder()
                 .key("ERROR")
-                .value("User [" + login + "] already exists!")
+                .value("User [" + login + "] already exist!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry noSuchGroup(String groupName) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("There is no group with name " + groupName)
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry noSuchUser(String login) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("User [" + login + "] does not exist!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry groupDoesNotExist(String id) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Group with id [" + id + "] does not exist!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry groupMandatoryFieldMissing() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Group NAME and KEYS are mandatory")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry groupAlreadyExists(String name) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Group with name [" + name + "] already exist!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry keyDoesNotExist(String key) {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Key [" + key + "] does not exist!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry invalidGroupOwner() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("You are not an owner of this group!")
+                .date(System.currentTimeMillis())
+                .build();
+    }
+
+    public static Entry groupIsNotCreated() {
+        return EntryEntity.builder()
+                .key("ERROR")
+                .value("Cannot update group - create it first!")
                 .date(System.currentTimeMillis())
                 .build();
     }

@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .authenticationEntryPoint(restAuthenticationEntryPoint)
                 .and()
+                .exceptionHandling().accessDeniedPage("/insufficientPermissions")
+                .and()
                 .formLogin()
                 .successHandler((rq, rs, auth) -> log.info(auth.getName() + " has logged in..."))
                 .failureHandler(restAuthenticationEntryPoint)
@@ -49,9 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/logout/success")
-                .deleteCookies("JSESSIONID")
-                .and()
-                .exceptionHandling().accessDeniedPage("/insufficientPermissions");
+                .deleteCookies("JSESSIONID");
     }
 
 

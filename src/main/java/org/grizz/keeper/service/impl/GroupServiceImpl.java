@@ -92,7 +92,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public EntryGroup getEntries(String groupName) {
         GroupEntity byName = groupRepo.findByName(groupName);
-        if (byName == null) throw new GroupDoesNotExistException(groupName);
+        if (byName == null) throw new NoSuchGroupException(groupName);
         List<String> keys = byName.getKeys();
         List<Entry> entries = Lists.newArrayList();
 

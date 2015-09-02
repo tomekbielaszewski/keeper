@@ -7,10 +7,18 @@ import org.grizz.keeper.model.Group;
 import org.grizz.keeper.model.impl.GroupEntity;
 import org.grizz.keeper.service.GroupService;
 import org.grizz.keeper.service.UserService;
+import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.codes.ErrorEntry;
+import org.grizz.keeper.service.exception.entry.KeyAlreadyExistsException;
+import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
+import org.grizz.keeper.service.exception.group.*;
+import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -67,6 +75,56 @@ public class GroupController {
         return entryGroup;
     }
 
-    //TODO secure endpoints
-    //TODO exception handling
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchGroupException.class)
+    public Entry noSuchGroupExceptionHandler(Exception e) {
+        NoSuchGroupException exception = (NoSuchGroupException) e;
+        return ErrorEntry.noSuchGroup(exception.getGroupName());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchUserException.class)
+    public Entry noSuchUserExceptionHandler(Exception e) {
+        NoSuchUserException exception = (NoSuchUserException) e;
+        return ErrorEntry.noSuchUser(exception.getLogin());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(GroupDoesNotExistException.class)
+    public Entry groupDoesNotExistException(Exception e) {
+        GroupDoesNotExistException exception = (GroupDoesNotExistException) e;
+        return ErrorEntry.groupDoesNotExist(exception.getId());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MandatoryFieldsMissingException.class)
+    public Entry mandatoryFieldsMissingException() {
+        return ErrorEntry.groupMandatoryFieldMissing();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(GroupAlreadyExistsException.class)
+    public Entry groupAlreadyExistsException(Exception e) {
+        GroupAlreadyExistsException exception = (GroupAlreadyExistsException) e;
+        return ErrorEntry.groupAlreadyExists(exception.getName());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(KeyDoesNotExistException.class)
+    public Entry keyDoesNotExistException(Exception e) {
+        KeyDoesNotExistException exception = (KeyDoesNotExistException) e;
+        return ErrorEntry.keyDoesNotExist(exception.getKey());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidGroupOwnerException.class)
+    public Entry invalidGroupOwnerException() {
+        return ErrorEntry.invalidGroupOwner();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(GroupIsNotCreatedException.class)
+    public Entry groupIsNotCreatedException() {
+        return ErrorEntry.groupIsNotCreated();
+    }
 }

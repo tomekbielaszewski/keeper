@@ -10,6 +10,7 @@ import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -90,22 +91,22 @@ public class EntryController {
         return amountOfDeleted;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MandatoryFieldsMissingException.class)
-    public Entry mandatoryFieldsMissingExceptionHandler(Exception e, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Entry mandatoryFieldsMissingExceptionHandler() {
         return ErrorEntry.keyAndValueAreMandatory();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestrictedKeyException.class)
-    public Entry restrictedKeyExceptionHandler(Exception e, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Entry restrictedKeyExceptionHandler(Exception e) {
         RestrictedKeyException exception = (RestrictedKeyException) e;
         return ErrorEntry.restrictedKey(exception.getKey());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(KeyAlreadyExistsException.class)
-    public Entry keyAlreadyExistsExceptionHandler(Exception e, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Entry keyAlreadyExistsExceptionHandler(Exception e) {
         KeyAlreadyExistsException exception = (KeyAlreadyExistsException) e;
         return ErrorEntry.keyAlreadyExists(exception.getKey());
     }

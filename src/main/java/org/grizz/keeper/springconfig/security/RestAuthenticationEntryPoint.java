@@ -1,6 +1,8 @@
 package org.grizz.keeper.springconfig.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.http.MediaType;
@@ -17,25 +19,23 @@ import java.io.IOException;
 /**
  * Created by Grizz on 2015-07-26.
  */
+@Slf4j
 @Component
 class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, AuthenticationFailureHandler {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-        response(response);
+        respondWith(response, ErrorEntry.unauthorized());
     }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        response(response);
+        respondWith(response, ErrorEntry.badLoginPassword());
     }
 
-    private void response(HttpServletResponse response) throws IOException {
+    private void respondWith(HttpServletResponse response, Entry errorEntry) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-        EntryEntity error = ErrorEntry.unauthorized();
-
-        response.getOutputStream().println(new ObjectMapper().writeValueAsString(error));
+        response.getOutputStream().println(new ObjectMapper().writeValueAsString(errorEntry));
     }
 }
