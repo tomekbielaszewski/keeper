@@ -6,9 +6,11 @@ import org.grizz.keeper.model.User;
 import org.grizz.keeper.model.impl.UserEntity;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -74,16 +76,23 @@ public class UserController {
         return newUser;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MandatoryFieldsMissingException.class)
-    public Entry mandatoryFieldsMissingExceptionHandler(Exception e, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Entry mandatoryFieldsMissingExceptionHandler() {
         return ErrorEntry.userFieldsMissing();
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public Entry keyAlreadyExistsExceptionHandler(Exception e, HttpServletResponse response) {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    public Entry keyAlreadyExistsExceptionHandler(Exception e) {
         UserAlreadyExistsException exception = (UserAlreadyExistsException) e;
         return ErrorEntry.userAlreadyExists(exception.getLogin());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchUserException.class)
+    public Entry noSuchUserExceptionHandler(Exception e) {
+        NoSuchUserException exception = (NoSuchUserException) e;
+        return ErrorEntry.noSuchUser(exception.getLogin());
     }
 }

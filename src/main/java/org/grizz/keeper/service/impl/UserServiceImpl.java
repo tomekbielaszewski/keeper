@@ -7,6 +7,7 @@ import org.grizz.keeper.model.repos.EntryRepository;
 import org.grizz.keeper.model.repos.UserRepository;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
 import org.grizz.keeper.utils.HashingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<String> getUserKeys(String login) {
+        if(userRepo.findByLogin(login) == null) throw new NoSuchUserException(login);
         List userOwnedKeys = entryRepo.findUserOwnedKeys(login);
         return userOwnedKeys;
     }
@@ -73,8 +75,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User add(UserEntity user) {
-        if (validateUser(user)) throw new MandatoryFieldsMissingException();
-        if (validateUserAlreadyExists(user)) throw new UserAlreadyExistsException(user.getLogin());
+        validateUser(user);
+        validateUserAlreadyExists(user);
 
         String password = user.getPasswordHash();
         user.setPasswordHash(HashingUtils.hash(password));
@@ -85,14 +87,13 @@ public class UserServiceImpl implements UserService {
         return newUser;
     }
 
-    private boolean validateUser(UserEntity user) {
-        if (StringUtils.isEmpty(user.getLogin())) return true;
-        if (StringUtils.isEmpty(user.getPasswordHash())) return true;
-        return false;
+    private void validateUser(UserEntity user) {
+        if (StringUtils.isEmpty(user.getLogin())) throw new MandatoryFieldsMissingException();
+        if (StringUtils.isEmpty(user.getPasswordHash())) throw new MandatoryFieldsMissingException();
     }
 
-    private boolean validateUserAlreadyExists(UserEntity user) {
+    private void validateUserAlreadyExists(UserEntity user) {
         UserEntity existingUser = userRepo.findByLogin(user.getLogin());
-        return existingUser != null;
+        if(existingUser != null) throw new UserAlreadyExistsException(user.getLogin());
     }
 }
