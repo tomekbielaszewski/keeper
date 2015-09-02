@@ -15,6 +15,7 @@
     "235704f5-28ff-58ef-9bf9-3375452fa25a",
     "2a42627b-fe7a-cf83-424c-7dbf544ff68a",
     "9fc3046c-9a5c-7cbf-fe89-f72f5638a011",
+    "716f31ce-d9b9-3131-c4f4-6660736f0fdc",
     "2fe7e3b4-1c85-ddcb-d712-92c0c9ab91d9",
     "e24690e2-4b5c-b164-a5b3-55b70c38a7a5",
     "3a89c7ea-f2a6-de53-7c6b-f5244fb22ded",
@@ -27,7 +28,8 @@
     "9f6d858e-62e0-e0fe-3c57-f5482589da59",
     "32919c60-7f29-04a3-b306-91da78eca588",
     "d824fbc6-8e8a-4090-4517-0ba531e8e4e4",
-    "7d0e9963-1cf1-7fc1-b2e4-591d69adceda"
+    "7d0e9963-1cf1-7fc1-b2e4-591d69adceda",
+    "e7bcfc64-0ab8-3080-d9f3-25c13ae4b05b"
   ],
   "requests": [
     {
@@ -252,6 +254,20 @@
     },
     {
       "collectionId": "b80c82e2-3bbe-c3a6-85c3-019dc443a73b",
+      "id": "716f31ce-d9b9-3131-c4f4-6660736f0fdc",
+      "name": "create new user",
+      "description": "",
+      "url": "http://localhost:8080/users",
+      "method": "POST",
+      "headers": "Content-Type: application/json\n",
+      "data": "{\n    \"login\": \"grizz\",\n    \"passwordHash\": \"password\",\n    \"roles\": [\n        \"ADMIN\",\n        \"USER\"\n    ]\n}",
+      "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "b80c82e2-3bbe-c3a6-85c3-019dc443a73b",
       "id": "71b44002-2c24-e114-3abc-e2b4b180835e",
       "name": "Last entry",
       "description": "",
@@ -396,6 +412,31 @@
       "headers": "",
       "data": "{\n    \"key\": \"vab\",\n    \"value\": \"heheszki\"\n}",
       "dataMode": "raw",
+      "timestamp": 0,
+      "responses": [],
+      "version": 2
+    },
+    {
+      "collectionId": "b80c82e2-3bbe-c3a6-85c3-019dc443a73b",
+      "id": "e7bcfc64-0ab8-3080-d9f3-25c13ae4b05b",
+      "name": "get grouped entries",
+      "description": "",
+      "url": "http://localhost:8080/groups/entries/test_group",
+      "method": "GET",
+      "headers": "",
+      "data": [
+        {
+          "key": "username",
+          "value": "grizz",
+          "type": "text"
+        },
+        {
+          "key": "password",
+          "value": "grizz",
+          "type": "text"
+        }
+      ],
+      "dataMode": "urlencoded",
       "timestamp": 0,
       "responses": [],
       "version": 2
