@@ -9,9 +9,11 @@ import java.util.List;
  * Created by Grizz on 2015-07-14.
  */
 public interface EntryRepository extends MongoRepository<EntryEntity, String>, EntryRepositoryCustom {
-    List<EntryEntity> findByKeyOrderByDateDesc(String key);
+    List<EntryEntity> findTop2000ByKeyOrderByDateDesc(String key);
+
     EntryEntity findTopByKeyOrderByDateDesc(String key);
-    List<EntryEntity> findByKeyAndDateGreaterThanEqualOrderByDateDesc(String key, Long date);
+
+    List<EntryEntity> findTop2000ByKeyAndDateGreaterThanEqualOrderByDateDesc(String key, Long date);
 
     Long deleteByKey(String key);
 

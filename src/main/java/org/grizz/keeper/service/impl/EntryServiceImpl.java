@@ -29,14 +29,14 @@ public class EntryServiceImpl implements EntryService {
     @Override
     public List<EntryEntity> getHistory(String key) {
         if (!keyExist(key)) throw new KeyDoesNotExistException(key);
-        List<EntryEntity> entries = entryRepository.findByKeyOrderByDateDesc(key);
+        List<EntryEntity> entries = entryRepository.findTop2000ByKeyOrderByDateDesc(key);
         return entries;
     }
 
     @Override
     public List<EntryEntity> getHistorySince(String key, Long from) {
         if (!keyExist(key)) throw new KeyDoesNotExistException(key);
-        List<EntryEntity> entries = entryRepository.findByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
+        List<EntryEntity> entries = entryRepository.findTop2000ByKeyAndDateGreaterThanEqualOrderByDateDesc(key, from);
         return entries;
     }
 
