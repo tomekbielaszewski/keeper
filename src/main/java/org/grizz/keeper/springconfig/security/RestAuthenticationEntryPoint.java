@@ -3,7 +3,6 @@ package org.grizz.keeper.springconfig.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
-import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
@@ -16,9 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by Grizz on 2015-07-26.
- */
 @Slf4j
 @Component
 class RestAuthenticationEntryPoint implements AuthenticationEntryPoint, AuthenticationFailureHandler {

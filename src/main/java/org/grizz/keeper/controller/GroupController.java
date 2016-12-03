@@ -4,12 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.EntryGroup;
 import org.grizz.keeper.model.Group;
-import org.grizz.keeper.model.impl.GroupEntity;
 import org.grizz.keeper.service.GroupService;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
-import org.grizz.keeper.service.exception.entry.KeyAlreadyExistsException;
 import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
 import org.grizz.keeper.service.exception.group.*;
 import org.grizz.keeper.service.exception.user.NoSuchUserException;
@@ -18,12 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * Created by Grizz on 2015-08-30.
- */
 @Slf4j
 @RestController
 @RequestMapping("/groups")
@@ -55,14 +49,14 @@ public class GroupController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Group createUserGroup(@RequestBody GroupEntity group) {
+    public Group createUserGroup(@RequestBody Group group) {
         Group newGroup = groupService.add(group);
         log.info("{} added new group with name {}.", userService.getCurrentUserLogin(), newGroup.getName());
         return newGroup;
     }
 
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Group updateUserGroup(@RequestBody GroupEntity group) {
+    public Group updateUserGroup(@RequestBody Group group) {
         Group updatedGroup = groupService.update(group);
         log.info("{} updated group with name {}.", userService.getCurrentUserLogin(), updatedGroup.getName());
         return updatedGroup;

@@ -3,24 +3,19 @@ package org.grizz.keeper.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.User;
-import org.grizz.keeper.model.impl.UserEntity;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
-import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-/**
- * Created by tomasz.bielaszewski on 2015-08-24.
- */
 @Slf4j
 @RestController
 @RequestMapping("/users")
@@ -32,7 +27,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public User getCurrentUser() {
         User currentUser = userService.getCurrentUser();
-        ((UserEntity)currentUser).setPasswordHash(null);
+        ((User) currentUser).setPasswordHash(null);
         return currentUser;
     }
 
@@ -70,7 +65,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public User createNew(@RequestBody UserEntity user) {
+    public User createNew(@RequestBody User user) {
         User newUser = userService.add(user);
         log.info("ADMIN: {} added new user with login {}", userService.getCurrentUserLogin(), newUser.getLogin());
         return newUser;

@@ -1,13 +1,23 @@
 package org.grizz.keeper.model;
 
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Set;
 
-/**
- * Created by tomasz.bielaszewski on 2015-08-24.
- */
-public interface User {
-    String getId();
-    String getLogin();
-    String getPasswordHash();
-    Set<String> getRoles();
+@Data
+@Builder
+@ToString
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+@Document(collection = "users")
+public class User {
+    @Id
+    private String id;
+    private String login;
+    private String passwordHash;
+    private Set<String> roles;
+
+    public User() {
+    }
 }

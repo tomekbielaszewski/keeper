@@ -12,9 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-/**
- * Created by Grizz on 2015-07-26.
- */
 @Slf4j
 @Configuration
 @EnableWebSecurity

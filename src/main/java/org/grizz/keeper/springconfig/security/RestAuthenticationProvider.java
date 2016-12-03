@@ -18,9 +18,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Created by Grizz on 2015-07-26.
- */
 @Slf4j
 @Component
 public class RestAuthenticationProvider implements AuthenticationProvider {

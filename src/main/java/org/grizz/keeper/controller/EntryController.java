@@ -2,14 +2,13 @@ package org.grizz.keeper.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
-import org.grizz.keeper.model.impl.EntryEntity;
 import org.grizz.keeper.service.EntryService;
 import org.grizz.keeper.service.UserService;
-import org.grizz.keeper.service.exception.entry.InvalidKeyOwnerException;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
+import org.grizz.keeper.service.exception.codes.ErrorEntry;
+import org.grizz.keeper.service.exception.entry.InvalidKeyOwnerException;
 import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
 import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
-import org.grizz.keeper.service.exception.codes.ErrorEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Grizz on 2015-07-13.
- */
 @Slf4j
 @RestController
 @RequestMapping("/entries")
@@ -32,37 +28,37 @@ public class EntryController {
     private UserService userService;
 
     @RequestMapping(value = "/{key}", method = RequestMethod.GET)
-    public List<? extends Entry> getHistory(@PathVariable String key) {
-        List<? extends Entry> history = entryService.getHistory(key);
+    public List<? extends org.grizz.keeper.model.Entry> getHistory(@PathVariable String key) {
+        List<? extends org.grizz.keeper.model.Entry> history = entryService.getHistory(key);
         log.info("{} got history of [{}] entries. Amount: {}", userService.getCurrentUserLogin(), key, history.size());
         return history;
     }
 
     @RequestMapping(value = "/{key}/{since}", method = RequestMethod.GET)
-    public List<? extends Entry> getHistorySince(@PathVariable String key, @PathVariable Long since) {
-        List<? extends Entry> history = entryService.getHistorySince(key, since);
+    public List<? extends org.grizz.keeper.model.Entry> getHistorySince(@PathVariable String key, @PathVariable Long since) {
+        List<? extends org.grizz.keeper.model.Entry> history = entryService.getHistorySince(key, since);
         log.info("{} got history of [{}] entries since [{}]. Amount: {}", userService.getCurrentUserLogin(), key, new Date(since), history.size());
         return history;
     }
 
     @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
-    public Entry getLast(@PathVariable String key) {
+    public org.grizz.keeper.model.Entry getLast(@PathVariable String key) {
         log.info("{} got last entry of [{}]", userService.getCurrentUserLogin(), key);
         return entryService.getLast(key);
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Entry add(@RequestBody EntryEntity entry) {
-        Entry added = entryService.add(entry);
+    public org.grizz.keeper.model.Entry add(@RequestBody Entry entry) {
+        org.grizz.keeper.model.Entry added = entryService.add(entry);
         log.info("{} added new entry of [{}]", userService.getCurrentUserLogin(), entry.getKey());
         return added;
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<? extends Entry> addMany(@RequestBody List<EntryEntity> entries) {
-        List<? extends Entry> addedEntries = entryService.addMany(entries);
+    public List<? extends org.grizz.keeper.model.Entry> addMany(@RequestBody List<Entry> entries) {
+        List<? extends org.grizz.keeper.model.Entry> addedEntries = entryService.addMany(entries);
         log.info("{} added many entries. Amount: {}", userService.getCurrentUserLogin(), entries.size());
         return addedEntries;
     }
@@ -93,27 +89,27 @@ public class EntryController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MandatoryFieldsMissingException.class)
-    public Entry mandatoryFieldsMissingExceptionHandler() {
+    public org.grizz.keeper.model.Entry mandatoryFieldsMissingExceptionHandler() {
         return ErrorEntry.keyAndValueAreMandatory();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestrictedKeyException.class)
-    public Entry restrictedKeyExceptionHandler(Exception e) {
+    public org.grizz.keeper.model.Entry restrictedKeyExceptionHandler(Exception e) {
         RestrictedKeyException exception = (RestrictedKeyException) e;
         return ErrorEntry.restrictedKey(exception.getKey());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidKeyOwnerException.class)
-    public Entry invalidKeyOwnerExceptionHandler(Exception e) {
+    public org.grizz.keeper.model.Entry invalidKeyOwnerExceptionHandler(Exception e) {
         InvalidKeyOwnerException exception = (InvalidKeyOwnerException) e;
         return ErrorEntry.invalidKeyOwner(exception.getKey());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(KeyDoesNotExistException.class)
-    public Entry keyDoesNotExistExceptionHandler(Exception e) {
+    public org.grizz.keeper.model.Entry keyDoesNotExistExceptionHandler(Exception e) {
         KeyDoesNotExistException exception = (KeyDoesNotExistException) e;
         return ErrorEntry.keyDoesNotExist(exception.getKey());
     }

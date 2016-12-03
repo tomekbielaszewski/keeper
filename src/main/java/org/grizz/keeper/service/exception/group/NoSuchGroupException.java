@@ -2,9 +2,6 @@ package org.grizz.keeper.service.exception.group;
 
 import lombok.Getter;
 
-/**
- * Created by tomasz.bielaszewski on 2015-09-01.
- */
 public class NoSuchGroupException extends RuntimeException {
     @Getter
     private final String groupName;

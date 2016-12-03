@@ -7,9 +7,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 
-/**
- * Created by Grizz on 2015-08-24.
- */
 public class EntryRepositoryImpl implements EntryRepositoryCustom {
     @Autowired
     MongoTemplate mongoTemplate;

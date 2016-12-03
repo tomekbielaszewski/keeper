@@ -1,12 +1,14 @@
 package org.grizz.keeper.model;
 
-import java.security.PrivateKey;
+import lombok.*;
+
 import java.util.List;
 
-/**
- * Created by tomasz.bielaszewski on 2015-09-02.
- */
-public interface EntryGroup {
-    String getName();
-    List<? extends Entry> getEntries();
+@Data
+@Builder
+@ToString
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+public class EntryGroup {
+    private String name;
+    private List<Entry> entries;
 }
