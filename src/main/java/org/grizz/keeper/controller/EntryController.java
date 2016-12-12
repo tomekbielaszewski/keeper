@@ -28,37 +28,37 @@ public class EntryController {
     private UserService userService;
 
     @RequestMapping(value = "/{key}", method = RequestMethod.GET)
-    public List<? extends org.grizz.keeper.model.Entry> getHistory(@PathVariable String key) {
-        List<? extends org.grizz.keeper.model.Entry> history = entryService.getHistory(key);
+    public List<Entry> getHistory(@PathVariable String key) {
+        List<Entry> history = entryService.getHistory(key);
         log.info("{} got history of [{}] entries. Amount: {}", userService.getCurrentUserLogin(), key, history.size());
         return history;
     }
 
     @RequestMapping(value = "/{key}/{since}", method = RequestMethod.GET)
-    public List<? extends org.grizz.keeper.model.Entry> getHistorySince(@PathVariable String key, @PathVariable Long since) {
-        List<? extends org.grizz.keeper.model.Entry> history = entryService.getHistorySince(key, since);
+    public List<Entry> getHistorySince(@PathVariable String key, @PathVariable Long since) {
+        List<Entry> history = entryService.getHistorySince(key, since);
         log.info("{} got history of [{}] entries since [{}]. Amount: {}", userService.getCurrentUserLogin(), key, new Date(since), history.size());
         return history;
     }
 
     @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
-    public org.grizz.keeper.model.Entry getLast(@PathVariable String key) {
+    public Entry getLast(@PathVariable String key) {
         log.info("{} got last entry of [{}]", userService.getCurrentUserLogin(), key);
         return entryService.getLast(key);
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public org.grizz.keeper.model.Entry add(@RequestBody Entry entry) {
-        org.grizz.keeper.model.Entry added = entryService.add(entry);
+    public Entry add(@RequestBody Entry entry) {
+        Entry added = entryService.add(entry);
         log.info("{} added new entry of [{}]", userService.getCurrentUserLogin(), entry.getKey());
         return added;
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<? extends org.grizz.keeper.model.Entry> addMany(@RequestBody List<Entry> entries) {
-        List<? extends org.grizz.keeper.model.Entry> addedEntries = entryService.addMany(entries);
+    public List<Entry> addMany(@RequestBody List<Entry> entries) {
+        List<Entry> addedEntries = entryService.addMany(entries);
         log.info("{} added many entries. Amount: {}", userService.getCurrentUserLogin(), entries.size());
         return addedEntries;
     }
@@ -89,27 +89,27 @@ public class EntryController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MandatoryFieldsMissingException.class)
-    public org.grizz.keeper.model.Entry mandatoryFieldsMissingExceptionHandler() {
+    public Entry mandatoryFieldsMissingExceptionHandler() {
         return ErrorEntry.keyAndValueAreMandatory();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestrictedKeyException.class)
-    public org.grizz.keeper.model.Entry restrictedKeyExceptionHandler(Exception e) {
+    public Entry restrictedKeyExceptionHandler(Exception e) {
         RestrictedKeyException exception = (RestrictedKeyException) e;
         return ErrorEntry.restrictedKey(exception.getKey());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidKeyOwnerException.class)
-    public org.grizz.keeper.model.Entry invalidKeyOwnerExceptionHandler(Exception e) {
+    public Entry invalidKeyOwnerExceptionHandler(Exception e) {
         InvalidKeyOwnerException exception = (InvalidKeyOwnerException) e;
         return ErrorEntry.invalidKeyOwner(exception.getKey());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(KeyDoesNotExistException.class)
-    public org.grizz.keeper.model.Entry keyDoesNotExistExceptionHandler(Exception e) {
+    public Entry keyDoesNotExistExceptionHandler(Exception e) {
         KeyDoesNotExistException exception = (KeyDoesNotExistException) e;
         return ErrorEntry.keyDoesNotExist(exception.getKey());
     }

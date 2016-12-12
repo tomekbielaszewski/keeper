@@ -35,15 +35,15 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public List<? extends Group> getCurrentUserGroups() {
-        List<? extends Group> groups = groupService.getCurrentUserGroups();
+    public List<Group> getCurrentUserGroups() {
+        List<Group> groups = groupService.getCurrentUserGroups();
         log.info("{} got his own groups. Amount: {}", userService.getCurrentUserLogin(), groups.size());
         return groups;
     }
 
     @RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
-    public List<? extends Group> getUserGroups(@PathVariable String login) {
-        List<? extends Group> groups = groupService.getUserGroups(login);
+    public List<Group> getUserGroups(@PathVariable String login) {
+        List<Group> groups = groupService.getUserGroups(login);
         log.info("{} got groups of user {}. Amount: {}", userService.getCurrentUserLogin(), login, groups.size());
         return groups;
     }

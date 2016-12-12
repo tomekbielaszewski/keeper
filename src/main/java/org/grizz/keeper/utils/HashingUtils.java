@@ -1,6 +1,6 @@
 package org.grizz.keeper.utils;
 
-import static org.grizz.keeper.utils.BCrypt.*;
+import static org.springframework.security.crypto.bcrypt.BCrypt.*;
 
 public class HashingUtils {
     public static String hash(String password) {

@@ -27,7 +27,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public User getCurrentUser() {
         User currentUser = userService.getCurrentUser();
-        ((User) currentUser).setPasswordHash(null);
+        currentUser.setPasswordHash(null);
         return currentUser;
     }
 
@@ -49,8 +49,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public List<? extends User> getList() {
-        List<? extends User> allUsers = userService.getAll();
+    public List<User> getList() {
+        List<User> allUsers = userService.getAll();
         log.info("ADMIN: {} listed all users. Amount {}", userService.getCurrentUserLogin(), allUsers.size());
         return allUsers;
     }

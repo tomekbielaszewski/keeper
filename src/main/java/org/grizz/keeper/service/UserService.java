@@ -24,7 +24,7 @@ public class UserService {
     @Autowired
     private EntryRepository entryRepo;
 
-    public List<? extends User> getAll() {
+    public List<User> getAll() {
         return userRepo.findAll();
     }
 

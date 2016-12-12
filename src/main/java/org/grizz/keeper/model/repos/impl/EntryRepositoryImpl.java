@@ -13,7 +13,8 @@ public class EntryRepositoryImpl implements EntryRepositoryCustom {
 
     @Override
     public List findUserOwnedKeys(String login) {
-        List distinct = mongoTemplate.getCollection("entries").distinct("key", new BasicDBObject("owner", login));
+        List distinct = mongoTemplate.getCollection("entries")
+                .distinct("key", new BasicDBObject("owner", login));
         return distinct;
     }
 }

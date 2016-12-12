@@ -34,12 +34,12 @@ public class GroupService {
         return group;
     }
 
-    public List<? extends Group> getCurrentUserGroups() {
+    public List<Group> getCurrentUserGroups() {
         String currentUser = userService.getCurrentUserLogin();
         return getUserGroups(currentUser);
     }
 
-    public List<? extends Group> getUserGroups(String login) {
+    public List<Group> getUserGroups(String login) {
         User user = userService.getByLogin(login);
         if (user == null) {
             throw new NoSuchUserException(login);
