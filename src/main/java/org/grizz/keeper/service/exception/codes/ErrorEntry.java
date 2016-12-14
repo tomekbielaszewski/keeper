@@ -4,129 +4,73 @@ import org.grizz.keeper.model.Entry;
 
 public class ErrorEntry {
     public static Entry restrictedKey(String key) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Provided key [" + key + "] is restricted!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Provided key [" + key + "] is restricted!");
     }
 
     public static Entry keyAndValueAreMandatory() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("KEY and VALUE are mandatory!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("KEY and VALUE are mandatory!");
     }
 
     public static Entry unauthorized() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Unauthorized access! Login first!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Unauthorized access! Login first!");
     }
 
     public static Entry badLoginPassword() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Bad login or password!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Bad login or password!");
     }
 
     public static Entry insufficientPermissions() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Insufficient permissions!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Insufficient permissions!");
     }
 
     public static Entry invalidKeyOwner(String key) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Provided key [" + key + "] belongs to somebody else!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Provided key [" + key + "] belongs to somebody else!");
     }
 
     public static Entry userFieldsMissing() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("LOGIN and PASSWORD are mandatory!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("LOGIN and PASSWORD are mandatory!");
     }
 
     public static Entry userAlreadyExists(String login) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("User [" + login + "] already exist!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("User [" + login + "] already exist!");
     }
 
     public static Entry noSuchGroup(String groupName) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("There is no group with name " + groupName)
-                .date(System.currentTimeMillis())
-                .build();
+        return error("There is no group with name " + groupName);
     }
 
     public static Entry noSuchUser(String login) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("User [" + login + "] does not exist!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("User [" + login + "] does not exist!");
     }
 
     public static Entry groupDoesNotExist(String id) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Group with id [" + id + "] does not exist!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Group with id [" + id + "] does not exist!");
     }
 
     public static Entry groupMandatoryFieldMissing() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Group NAME and KEYS are mandatory")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Group NAME and KEYS are mandatory");
     }
 
     public static Entry groupAlreadyExists(String name) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Group with name [" + name + "] already exist!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Group with name [" + name + "] already exist!");
     }
 
     public static Entry keyDoesNotExist(String key) {
-        return Entry.builder()
-                .key("ERROR")
-                .value("Key [" + key + "] does not exist!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("Key [" + key + "] does not exist!");
     }
 
     public static Entry invalidGroupOwner() {
-        return Entry.builder()
-                .key("ERROR")
-                .value("You are not an owner of this group!")
-                .date(System.currentTimeMillis())
-                .build();
+        return error("You are not an owner of this group!");
     }
 
     public static Entry groupIsNotCreated() {
+        return error("Cannot update group - create it first!");
+    }
+
+    private static Entry error(String error) {
         return Entry.builder()
                 .key("ERROR")
-                .value("Cannot update group - create it first!")
+                .value(error)
                 .date(System.currentTimeMillis())
                 .build();
     }
