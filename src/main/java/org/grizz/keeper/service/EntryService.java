@@ -45,25 +45,17 @@ public class EntryService {
 
     public Entry add(Entry entry) {
         validate(entry);
-        validateUserOwnership(entry);
-        hasRestrictedKey(entry);
-
-        fillDateIfNeeded(entry);
-        entry.setOwner(userService.getCurrentUserLogin());
+        fillEntry(entry);
 
         Entry insertedEntry = entryRepository.insert(entry);
         return insertedEntry;
     }
 
     public List<Entry> addMany(List<Entry> entries) {
-        for (Entry entry : entries) {
-            validate(entry);
-            validateUserOwnership(entry);
-            hasRestrictedKey(entry);
-
-            fillDateIfNeeded(entry);
-            entry.setOwner(userService.getCurrentUserLogin());
-        }
+        entries.forEach(e -> {
+            validate(e);
+            fillEntry(e);
+        });
 
         List<Entry> insertedEntries = entryRepository.insert(entries);
         return insertedEntries;
@@ -85,6 +77,17 @@ public class EntryService {
     }
 
     private void validate(Entry entry) {
+        validateMandatoryFields(entry);
+        validateUserOwnership(entry);
+        validateRestrictedKey(entry);
+    }
+
+    private void fillEntry(Entry entry) {
+        fillDateIfNeeded(entry);
+        entry.setOwner(userService.getCurrentUserLogin());
+    }
+
+    private void validateMandatoryFields(Entry entry) {
         if (StringUtils.isEmpty(entry.getKey()) ||
                 StringUtils.isEmpty(entry.getValue())) throw new MandatoryFieldsMissingException();
     }
@@ -97,7 +100,7 @@ public class EntryService {
         }
     }
 
-    private void hasRestrictedKey(Entry entry) {
+    private void validateRestrictedKey(Entry entry) {
         if ("ERROR".equals(entry.getKey()))
             throw new RestrictedKeyException(entry.getKey());
     }

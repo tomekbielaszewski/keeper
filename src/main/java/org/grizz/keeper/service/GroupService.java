@@ -1,6 +1,5 @@
 package org.grizz.keeper.service;
 
-import com.google.common.collect.Lists;
 import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.model.EntryGroup;
 import org.grizz.keeper.model.Group;
@@ -16,6 +15,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GroupService {
@@ -27,11 +28,8 @@ public class GroupService {
     private EntryService entryService;
 
     public Group get(String name) {
-        Group group = groupRepo.findByName(name);
-        if (group == null) {
-            throw new NoSuchGroupException(name);
-        }
-        return group;
+        return Optional.ofNullable(groupRepo.findByName(name))
+                .orElseThrow(() -> new NoSuchGroupException(name));
     }
 
     public List<Group> getCurrentUserGroups() {
@@ -40,16 +38,14 @@ public class GroupService {
     }
 
     public List<Group> getUserGroups(String login) {
-        User user = userService.getByLogin(login);
-        if (user == null) {
-            throw new NoSuchUserException(login);
-        }
-        List<Group> byOwner = groupRepo.findByOwner(login);
+        User user = Optional.ofNullable(userService.getByLogin(login))
+                .orElseThrow(() -> new NoSuchUserException(login));
+        List<Group> byOwner = groupRepo.findByOwner(user.getLogin());
         return byOwner;
     }
 
     public Group add(Group group) {
-        validate(group);
+        validateMandatoryFields(group);
         validateGroupAlreadyExists(group);
         validateKeysExist(group);
 
@@ -60,10 +56,10 @@ public class GroupService {
     }
 
     public Group update(Group group) {
-        validate(group);
-        validateGroupExists(group);
-        validateOwner(group);
+        validateMandatoryFields(group);
+        validateGroupExist(group);
         validateKeysExist(group);
+        validateOwner(group);
 
         Group groupToUpdate = groupRepo.findOne(group.getId());
         groupToUpdate.setName(group.getName());
@@ -76,15 +72,12 @@ public class GroupService {
     }
 
     public EntryGroup getEntries(String groupName) {
-        Group byName = groupRepo.findByName(groupName);
-        if (byName == null) throw new NoSuchGroupException(groupName);
+        Group byName = Optional.ofNullable(groupRepo.findByName(groupName))
+                .orElseThrow(() -> new NoSuchGroupException(groupName));
         List<String> keys = byName.getKeys();
-        List<Entry> entries = Lists.newArrayList();
-
-        for (String key : keys) {
-            Entry last = entryService.getLast(key);
-            entries.add(last);
-        }
+        List<Entry> entries = keys.stream()
+                .map(key -> entryService.getLast(key))
+                .collect(Collectors.toList());
 
         return EntryGroup.builder()
                 .name(groupName)
@@ -92,7 +85,7 @@ public class GroupService {
                 .build();
     }
 
-    private void validate(Group group) {
+    private void validateMandatoryFields(Group group) {
         Objects.requireNonNull(group);
         if (StringUtils.isEmpty(group.getName())) throw new MandatoryFieldsMissingException();
         if (group.getKeys() == null || group.getKeys().isEmpty()) throw new MandatoryFieldsMissingException();
@@ -114,7 +107,7 @@ public class GroupService {
             throw new InvalidGroupOwnerException();
     }
 
-    private void validateGroupExists(Group group) {
+    private void validateGroupExist(Group group) {
         if (group.getId() == null) throw new GroupIsNotCreatedException();
         if (groupRepo.findOne(group.getId()) == null) throw new GroupDoesNotExistException(group.getId());
     }
