@@ -1,5 +1,6 @@
 package org.grizz.keeper.service.exception.codes;
 
+import com.mongodb.BasicDBObject;
 import org.grizz.keeper.model.Entry;
 
 public class ErrorEntry {
@@ -70,7 +71,7 @@ public class ErrorEntry {
     private static Entry error(String error) {
         return Entry.builder()
                 .key("ERROR")
-                .value(error)
+                .value(new BasicDBObject("description", error))
                 .date(System.currentTimeMillis())
                 .build();
     }

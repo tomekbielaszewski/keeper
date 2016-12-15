@@ -1,5 +1,6 @@
 package org.grizz.keeper.model;
 
+import com.mongodb.BasicDBObject;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +14,7 @@ public class Entry {
     @Id
     private String id;
     private String key;
-    private String value;
+    private BasicDBObject value;
     private String owner;
     private Long date;
 

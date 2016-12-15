@@ -66,18 +66,17 @@ public class UserService {
         validateUser(user);
         validateUserAlreadyExist(user);
 
-        String password = user.getPasswordHash();
-        user.setPasswordHash(HashingUtils.hash(password));
+        String password = user.getPassword();
+        user.setPassword(HashingUtils.hash(password));
         user.setId(null);
 
         User newUser = userRepo.insert(user);
-
         return newUser;
     }
 
     private void validateUser(User user) {
         if (StringUtils.isEmpty(user.getLogin())) throw new MandatoryFieldsMissingException();
-        if (StringUtils.isEmpty(user.getPasswordHash())) throw new MandatoryFieldsMissingException();
+        if (StringUtils.isEmpty(user.getPassword())) throw new MandatoryFieldsMissingException();
     }
 
     private void validateUserAlreadyExist(User user) {

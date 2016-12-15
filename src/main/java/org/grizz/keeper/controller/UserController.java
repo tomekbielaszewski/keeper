@@ -27,7 +27,6 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public User getCurrentUser() {
         User currentUser = userService.getCurrentUser();
-        currentUser.setPasswordHash(null);
         return currentUser;
     }
 
