@@ -4,6 +4,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Map;
+
 @Data
 @Builder
 @ToString
@@ -13,7 +15,7 @@ public class Entry {
     @Id
     private String id;
     private String key;
-    private String value;
+    private Map<String, Object> value;
     private String owner;
     private Long date;
 
