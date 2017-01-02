@@ -47,7 +47,7 @@ public class EntryController {
         return entryService.getLast(key);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Entry add(@RequestBody Entry entry) {
         Entry added = entryService.add(entry);
@@ -55,7 +55,7 @@ public class EntryController {
         return added;
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Entry> addMany(@RequestBody List<Entry> entries) {
         List<Entry> addedEntries = entryService.addMany(entries);
@@ -63,7 +63,7 @@ public class EntryController {
         return addedEntries;
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/all/{key}", method = RequestMethod.DELETE)
     public Long deleteAll(@PathVariable String key) {
         Long amountOfDeleted = entryService.deleteAll(key);
@@ -71,7 +71,7 @@ public class EntryController {
         return amountOfDeleted;
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/{key}/{date}", method = RequestMethod.DELETE)
     public Long deleteSingle(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteSingle(key, date);
@@ -79,7 +79,7 @@ public class EntryController {
         return amountOfDeleted;
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/{key}/older/than/{date}", method = RequestMethod.DELETE)
     public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteOlderThan(key, date);

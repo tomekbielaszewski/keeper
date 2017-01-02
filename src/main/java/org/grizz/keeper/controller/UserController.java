@@ -38,7 +38,7 @@ public class UserController {
         return currentUserKeys;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/keys/{login}", method = RequestMethod.GET)
     public List<String> getUserKeys(@PathVariable String login) {
         List<String> userKeys = userService.getUserKeys(login);
@@ -46,7 +46,7 @@ public class UserController {
         return userKeys;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<User> getList() {
         List<User> allUsers = userService.getAll();
@@ -54,7 +54,7 @@ public class UserController {
         return allUsers;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(value = "/{login}", method = RequestMethod.GET)
     public User getByLogin(@PathVariable String login) {
         User user = userService.getByLogin(login);
@@ -62,7 +62,7 @@ public class UserController {
         return user;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public User createNew(@RequestBody User user) {
         User newUser = userService.add(user);
