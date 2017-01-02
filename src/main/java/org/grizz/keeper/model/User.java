@@ -1,5 +1,6 @@
 package org.grizz.keeper.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,7 +16,8 @@ public class User {
     @Id
     private String id;
     private String login;
-    private String passwordHash;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
     private Set<String> roles;
 
     public User() {

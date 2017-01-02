@@ -52,7 +52,7 @@ public class UserService {
     }
 
     public List<String> getUserKeys(String login) {
-        if (userRepo.findByLogin(login) == null) throw new NoSuchUserException(login);
+        validateUserExist(login);
         List userOwnedKeys = entryRepo.findUserOwnedKeys(login);
         return userOwnedKeys;
     }
@@ -64,24 +64,27 @@ public class UserService {
 
     public User add(User user) {
         validateUser(user);
-        validateUserAlreadyExists(user);
+        validateUserAlreadyExist(user);
 
-        String password = user.getPasswordHash();
-        user.setPasswordHash(HashingUtils.hash(password));
+        String password = user.getPassword();
+        user.setPassword(HashingUtils.hash(password));
         user.setId(null);
 
         User newUser = userRepo.insert(user);
-
         return newUser;
     }
 
     private void validateUser(User user) {
         if (StringUtils.isEmpty(user.getLogin())) throw new MandatoryFieldsMissingException();
-        if (StringUtils.isEmpty(user.getPasswordHash())) throw new MandatoryFieldsMissingException();
+        if (StringUtils.isEmpty(user.getPassword())) throw new MandatoryFieldsMissingException();
     }
 
-    private void validateUserAlreadyExists(User user) {
+    private void validateUserAlreadyExist(User user) {
         User existingUser = userRepo.findByLogin(user.getLogin());
         if (existingUser != null) throw new UserAlreadyExistsException(user.getLogin());
+    }
+
+    private void validateUserExist(String login) {
+        if (userRepo.findByLogin(login) == null) throw new NoSuchUserException(login);
     }
 }

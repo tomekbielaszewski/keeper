@@ -44,13 +44,13 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void checkPassword(User user, String password) {
-        if (!HashingUtils.check(password, user.getPasswordHash()))
+        if (!HashingUtils.check(password, user.getPassword()))
             throw new UserAuthenticationException("Bad login or password");
     }
 
     private List<GrantedAuthority> getAuthorities(User user) {
         return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role))
+                .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
