@@ -34,20 +34,6 @@ public class GroupController {
         return group;
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public List<Group> getCurrentUserGroups() {
-        List<Group> groups = groupService.getCurrentUserGroups();
-        log.info("{} got his own groups. Amount: {}", userService.getCurrentUserLogin(), groups.size());
-        return groups;
-    }
-
-    @RequestMapping(value = "/user/{login}", method = RequestMethod.GET)
-    public List<Group> getUserGroups(@PathVariable String login) {
-        List<Group> groups = groupService.getUserGroups(login);
-        log.info("{} got groups of user {}. Amount: {}", userService.getCurrentUserLogin(), login, groups.size());
-        return groups;
-    }
-
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Group createUserGroup(@RequestBody Group group) {
         Group newGroup = groupService.add(group);

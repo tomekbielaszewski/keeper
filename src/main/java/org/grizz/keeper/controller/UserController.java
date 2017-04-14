@@ -23,31 +23,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @RequestMapping(method = RequestMethod.GET)
-    public User getCurrentUser() {
-        User currentUser = userService.getCurrentUser();
-        return currentUser;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = "/keys", method = RequestMethod.GET)
-    public List<String> getCurrentUserKeys() {
-        List<String> currentUserKeys = userService.getCurrentUserKeys();
-        log.info("{} listed all his keys. Amount {}", userService.getCurrentUserLogin(), currentUserKeys.size());
-        return currentUserKeys;
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/keys/{login}", method = RequestMethod.GET)
-    public List<String> getUserKeys(@PathVariable String login) {
-        List<String> userKeys = userService.getUserKeys(login);
-        log.info("ADMIN: {} listed all keys belonged to {}. Amount {}", userService.getCurrentUserLogin(), login, userKeys.size());
-        return userKeys;
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<User> getList() {
         List<User> allUsers = userService.getAll();
         log.info("ADMIN: {} listed all users. Amount {}", userService.getCurrentUserLogin(), allUsers.size());

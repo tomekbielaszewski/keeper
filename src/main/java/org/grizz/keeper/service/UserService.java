@@ -7,7 +7,7 @@ import org.grizz.keeper.model.repos.UserRepository;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.grizz.keeper.service.exception.user.UserAlreadyExistsException;
-import org.grizz.keeper.utils.HashingUtils;
+import org.grizz.keeper.service.exception.user.UserAuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+
+import static org.grizz.keeper.utils.HashingUtils.check;
+import static org.grizz.keeper.utils.HashingUtils.hash;
 
 @Slf4j
 @Service
@@ -67,11 +70,21 @@ public class UserService {
         validateUserAlreadyExist(user);
 
         String password = user.getPassword();
-        user.setPassword(HashingUtils.hash(password));
+        user.setPassword(hash(password));
         user.setId(null);
 
         User newUser = userRepo.insert(user);
         return newUser;
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        User currentUser = getCurrentUser();
+        if (!check(oldPassword, currentUser.getPassword())) {
+            throw new UserAuthenticationException("Bad password!");
+        } else {
+            currentUser.setPassword(hash(newPassword));
+            userRepo.save(currentUser);
+        }
     }
 
     private void validateUser(User user) {
