@@ -43,7 +43,7 @@ public class EntryController {
         return history;
     }
 
-    @RequestMapping(value = "/last/{key}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{key}/last", method = RequestMethod.GET)
     public Entry getLast(@PathVariable String key) {
         log.info("{} got last entry of [{}]", userService.getCurrentUserLogin(), key);
         return entryService.getLast(key);
