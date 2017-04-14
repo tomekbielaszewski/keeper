@@ -3,9 +3,11 @@ package org.grizz.keeper.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.grizz.keeper.model.Entry;
 import org.grizz.keeper.service.EntryService;
+import org.grizz.keeper.service.SystemEntry;
 import org.grizz.keeper.service.UserService;
 import org.grizz.keeper.service.exception.MandatoryFieldsMissingException;
 import org.grizz.keeper.service.exception.codes.ErrorEntry;
+import org.grizz.keeper.service.exception.entry.EntryDoesNotExistException;
 import org.grizz.keeper.service.exception.entry.InvalidKeyOwnerException;
 import org.grizz.keeper.service.exception.entry.KeyDoesNotExistException;
 import org.grizz.keeper.service.exception.entry.RestrictedKeyException;
@@ -56,35 +58,36 @@ public class EntryController {
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/many", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<Entry> addMany(@RequestBody List<Entry> entries) {
-        List<Entry> addedEntries = entryService.addMany(entries);
-        log.info("{} added many entries. Amount: {}", userService.getCurrentUserLogin(), entries.size());
-        return addedEntries;
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Entry delete(@PathVariable String id) {
+        entryService.delete(id);
+        log.info("{} deleted single entry with id {}", userService.getCurrentUserLogin(), id);
+        return SystemEntry.removed();
     }
 
     @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "/all/{key}", method = RequestMethod.DELETE)
-    public Long deleteAll(@PathVariable String key) {
+    public Entry deleteAll(@PathVariable String key) {
         Long amountOfDeleted = entryService.deleteAll(key);
         log.info("{} deleted all {} entries of {}", userService.getCurrentUserLogin(), amountOfDeleted, key);
-        return amountOfDeleted;
+        return SystemEntry.removedAmount(amountOfDeleted);
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/{key}/{date}", method = RequestMethod.DELETE)
-    public Long deleteSingle(@PathVariable String key, @PathVariable Long date) {
+    @RequestMapping(value = "/all/{key}/exact/{date}", method = RequestMethod.DELETE)
+    public Entry deleteSingle(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteSingle(key, date);
         log.info("{} deleted {} entry of {} with date [{}]", userService.getCurrentUserLogin(), amountOfDeleted, key, new Date(date));
-        return amountOfDeleted;
+        return SystemEntry.removedAmount(amountOfDeleted);
     }
 
     @PreAuthorize("hasAuthority('USER')")
-    @RequestMapping(value = "/{key}/older/than/{date}", method = RequestMethod.DELETE)
-    public Long deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
+    @RequestMapping(value = "/all/{key}/older/than/{date}", method = RequestMethod.DELETE)
+    public Entry deleteOlderThan(@PathVariable String key, @PathVariable Long date) {
         Long amountOfDeleted = entryService.deleteOlderThan(key, date);
         log.info("{} deleted {} entries of {} older than {}", userService.getCurrentUserLogin(), amountOfDeleted, key, new Date(date));
-        return amountOfDeleted;
+        return SystemEntry.removedAmount(amountOfDeleted);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -95,22 +98,25 @@ public class EntryController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestrictedKeyException.class)
-    public Entry restrictedKeyExceptionHandler(Exception e) {
-        RestrictedKeyException exception = (RestrictedKeyException) e;
-        return ErrorEntry.restrictedKey(exception.getKey());
+    public Entry restrictedKeyExceptionHandler(RestrictedKeyException e) {
+        return ErrorEntry.restrictedKey(e.getKey());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidKeyOwnerException.class)
-    public Entry invalidKeyOwnerExceptionHandler(Exception e) {
-        InvalidKeyOwnerException exception = (InvalidKeyOwnerException) e;
-        return ErrorEntry.invalidKeyOwner(exception.getKey());
+    public Entry invalidKeyOwnerExceptionHandler(InvalidKeyOwnerException e) {
+        return ErrorEntry.invalidKeyOwner(e.getKey());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(KeyDoesNotExistException.class)
-    public Entry keyDoesNotExistExceptionHandler(Exception e) {
-        KeyDoesNotExistException exception = (KeyDoesNotExistException) e;
-        return ErrorEntry.keyDoesNotExist(exception.getKey());
+    public Entry keyDoesNotExistExceptionHandler(KeyDoesNotExistException e) {
+        return ErrorEntry.keyDoesNotExist(e.getKey());
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(EntryDoesNotExistException.class)
+    public Entry entryDoesNotExistExceptionHandler(EntryDoesNotExistException e) {
+        return ErrorEntry.entryDoesNotExist(e.getId());
     }
 }

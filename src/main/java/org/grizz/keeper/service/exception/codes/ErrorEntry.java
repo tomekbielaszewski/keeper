@@ -62,6 +62,10 @@ public class ErrorEntry {
         return getErrorEntry("Key [" + key + "] does not exist!");
     }
 
+    public static Entry entryDoesNotExist(String id) {
+        return getErrorEntry("Entry with id [" + id + "] does not exist!");
+    }
+
     public static Entry invalidGroupOwner() {
         return getErrorEntry("You are not an owner of this group!");
     }
