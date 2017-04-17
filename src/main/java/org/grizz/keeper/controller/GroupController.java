@@ -14,6 +14,7 @@ import org.grizz.keeper.service.exception.user.NoSuchUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +35,7 @@ public class GroupController {
         return group;
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Group createUserGroup(@RequestBody Group group) {
         Group newGroup = groupService.add(group);
@@ -41,6 +43,7 @@ public class GroupController {
         return newGroup;
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Group updateUserGroup(@RequestBody Group group) {
         Group updatedGroup = groupService.update(group);
