@@ -85,7 +85,7 @@ public class GroupController {
         return ErrorEntry.groupMandatoryFieldMissing();
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(GroupAlreadyExistsException.class)
     public Entry groupAlreadyExistsException(Exception e) {
         GroupAlreadyExistsException exception = (GroupAlreadyExistsException) e;

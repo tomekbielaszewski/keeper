@@ -53,7 +53,7 @@ public class UserController {
         return ErrorEntry.userFieldsMissing();
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserAlreadyExistsException.class)
     public Entry keyAlreadyExistsExceptionHandler(Exception e) {
         UserAlreadyExistsException exception = (UserAlreadyExistsException) e;
