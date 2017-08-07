@@ -29,6 +29,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         String login = authentication.getName();
         String password = (String) authentication.getCredentials();
 
+        log.debug("Trying to log in: {}", login);
         User user = userService.getByLogin(login);
         checkUsername(user);
         checkPassword(user, password);
@@ -40,12 +41,17 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
     }
 
     private void checkUsername(User user) throws AuthenticationException {
-        if (user == null) throw new UserAuthenticationException("Bad login or password");
+        if (user == null) {
+            log.debug("User does not exist");
+            throw new UserAuthenticationException("Bad login or password");
+        }
     }
 
     private void checkPassword(User user, String password) {
-        if (!HashingUtils.check(password, user.getPassword()))
+        if (!HashingUtils.check(password, user.getPassword())) {
+            log.debug("Bad password provided for user {}", user.getLogin());
             throw new UserAuthenticationException("Bad login or password");
+        }
     }
 
     private List<GrantedAuthority> getAuthorities(User user) {
