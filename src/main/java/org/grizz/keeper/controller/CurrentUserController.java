@@ -48,6 +48,7 @@ public class CurrentUserController {
         return userKeys;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "/groups", method = RequestMethod.GET)
     public List<Group> getCurrentUserGroups() {
         List<Group> groups = groupService.getCurrentUserGroups();
